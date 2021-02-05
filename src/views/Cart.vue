@@ -2,12 +2,18 @@
   <AppPage>
     <div class="p-grid">
       <div class="p-col-8 p-d-flex p-flex-column">
-        <div class="p-col"><h2 class="p-m-0">Товары</h2></div>
+        <div class="p-col">
+          <h2 class="p-m-0">Товары</h2>
+          <h3 class="p-text-center" v-if="!products.length">
+            В корзину ещё ничего не добавлено
+          </h3>
+        </div>
+
         <ProductList
           v-for="product in products"
           :key="product.id"
           :data="product"
-          @priceProduct="asd"
+          @priceProduct="changeQuantity"
         />
       </div>
 
@@ -28,7 +34,7 @@
         </div>
         <div class="p-col">
           <div class="p-d-flex p-jc-between p-mb-3">
-            <div><strong>Цена товаров:</strong></div>
+            <div><strong>Итог:</strong></div>
             <div>{{ totalProductsPrice }} РУБ</div>
           </div>
         </div>
@@ -40,45 +46,32 @@
 <script>
 import AppPage from "../components/ui/AppPage";
 import ProductList from "../components/ui/ProductList";
-import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import { computed, onMounted } from "vue";
 
 export default {
   setup() {
-    const products = ref([
-      {
-        id: 1,
-        image:
-          "https://primefaces.org/primevue/showcase/demo/images/product/brown-purse.jpg",
-        name: "Яблоки",
-        description: "очень свежие зеленые яблоки",
-        category: "fruit",
-        price: 100,
-        count: 1
-      },
-      {
-        id: 4,
-        image:
-          "https://primefaces.org/primevue/showcase/demo/images/product/brown-purse.jpg",
-        name: "Апельсины",
-        description: "очень свежие оранжевые апельсины",
-        category: "fruit fruit",
-        price: 200,
-        count: 1
-      }
-    ]);
-    const totalProductsPrice = computed(
-      () =>
-        products.value.reduce((acc, itm) => {
-          acc += itm.price * itm.count;
-          return acc;
-        }, 0)
+    onMounted(() => store.dispatch("cart/getProductsForCart", CART_MODEL));
+    const CART_MODEL = {
+      "9": 4,
+      "4": 3,
+      "15": 7,
+      "10": 1
+    };
+    const store = useStore();
+    const products = computed(() => store.getters["cart/products"]);
+    const totalProductsPrice = computed(() =>
+      products.value.reduce((acc, itm) => {
+        acc += itm.price * itm.quantity;
+        return acc;
+      }, 0)
     );
-    function asd(val) {
-      console.log(val);
-      products.value.find(itm => itm.id === val.id).count = val.count
+    function changeQuantity(product) {
+      products.value.find(itm => itm.id === product.id).quantity =
+        product.quantity;
     }
     return {
-      asd,
+      changeQuantity,
       products,
       totalProductsPrice
     };
@@ -102,5 +95,6 @@ export default {
 .product-img {
   /* padding: .5rem; */
   max-width: 200px;
+  max-height: 150px;
 }
 </style>

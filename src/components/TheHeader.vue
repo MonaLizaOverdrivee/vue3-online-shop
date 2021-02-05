@@ -3,7 +3,9 @@
     <template #start>
       <div class="p-d-flex">
         <h2 class="p-m-0">OnlineShop |</h2>
-        <Button label="Категории" class="p-button-secondary p-button-text" />
+        <router-link to="/" v-slot="{ navigate }">
+          <Button label="Магазин" class="p-button-secondary p-button-text" @click="navigate"/>
+        </router-link>
       </div>
     </template>
     <template #end>
@@ -11,7 +13,7 @@
         ><i
           class="pi pi-shopping-cart p-mr-4 p-text-secondary"
           style="font-size: 1.9rem"
-          v-badge="0"
+          v-badge="$store.getters['cart/quantityProductsInCart']"
           to="/cart"
         ></i
       ></router-link>

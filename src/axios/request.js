@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
-const requestAxios = axios.create({
-  baseURL: process.env.VUE_APP_FB_URL
-})
+const requestCartProduct = axios.create({
+  baseURL: process.env.VUE_APP_DB_PRODUCTS
+});
 
-export default requestAxios
+export default requestCartProduct;

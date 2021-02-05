@@ -1,9 +1,11 @@
 <template>
-  <div class="card">
-    <h1>Shop</h1>
-  </div>
+  <AppPage></AppPage>
 </template>
 
 <script>
-export default {};
+import AppPage from '../components/ui/AppPage.vue';
+export default {
+components:{ AppPage }
+};
 </script>
+
