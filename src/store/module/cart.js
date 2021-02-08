@@ -1,17 +1,24 @@
-import requestCartProduct from "../../axios/request";
+import requestToDatabase from "../../axios/request";
 
 export default {
   namespaced: true,
   state() {
     return {
-      products: []
+      products: [],
+      cart: {}
     };
   },
   getters: {
     products: ({ products }) => products,
-    quantityProductsInCart: ({ products }) => products.length
+    quantityProductsInCart: ({ products }) => products.length,
+    cart: ({ cart }) => cart
   },
   mutations: {
+    SET_CART(state, product){
+      state.cart[product.id] ++
+      console.log(state.cart)
+      console.log(product)
+    },
     SET_PRODUCTS(state, products) {
       state.products = products;
     },
@@ -28,7 +35,7 @@ export default {
       const idProducts = Object.keys(dataCart)
         .map(itm => `id=${itm}`)
         .join("&");
-      const { data } = await requestCartProduct.get(`products?${idProducts}`);
+      const { data } = await requestToDatabase.get(`products?${idProducts}`);
       const result = data.map(itm => ({ quantity: dataCart[itm.id], ...itm }));
       commit("SET_PRODUCTS", result);
     },

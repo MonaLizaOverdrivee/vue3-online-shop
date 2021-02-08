@@ -17,6 +17,9 @@ export default {
 };
 </script>
 <style>
+.p-button:focus {
+  box-shadow: none !important;
+}
 body {
   margin-top: 0;
 }

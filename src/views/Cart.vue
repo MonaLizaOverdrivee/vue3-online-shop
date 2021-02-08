@@ -80,21 +80,3 @@ export default {
 };
 </script>
 
-<style>
-.p-inputtext:enabled:focus {
-  box-shadow: none !important;
-}
-.p-inputtext {
-  border: none;
-  text-align: center;
-  width: 41px;
-}
-.product-info {
-  flex: 1 1 auto;
-}
-.product-img {
-  /* padding: .5rem; */
-  max-width: 200px;
-  max-height: 150px;
-}
-</style>

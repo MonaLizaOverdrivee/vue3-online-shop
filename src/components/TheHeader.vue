@@ -4,7 +4,11 @@
       <div class="p-d-flex">
         <h2 class="p-m-0">OnlineShop |</h2>
         <router-link to="/" v-slot="{ navigate }">
-          <Button label="Магазин" class="p-button-secondary p-button-text" @click="navigate"/>
+          <Button
+            label="Магазин"
+            class="p-button-secondary p-button-text"
+            @click="navigate"
+          />
         </router-link>
       </div>
     </template>
@@ -48,5 +52,6 @@ export default {
   border: 0 !important;
   margin: 0 -8px;
   padding: 0.7rem !important;
+  box-shadow: 0px 3px 4px -1px
 }
 </style>

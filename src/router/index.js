@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "Онлайн магазин",
+    name: "Магазин",
     component: () => import("../views/Shop.vue"),
     meta: {
       layout: "main"
