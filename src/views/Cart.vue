@@ -13,7 +13,6 @@
           v-for="product in products"
           :key="product.id"
           :data="product"
-          @priceProduct="changeQuantity"
         />
       </div>
 
@@ -51,13 +50,7 @@ import { computed, onMounted } from "vue";
 
 export default {
   setup() {
-    onMounted(() => store.dispatch("cart/getProductsForCart", CART_MODEL));
-    const CART_MODEL = {
-      "9": 4,
-      "4": 3,
-      "15": 7,
-      "10": 1
-    };
+    onMounted(() => store.dispatch("cart/getProductsForCart"));
     const store = useStore();
     const products = computed(() => store.getters["cart/products"]);
     const totalProductsPrice = computed(() =>
@@ -66,12 +59,7 @@ export default {
         return acc;
       }, 0)
     );
-    function changeQuantity(product) {
-      products.value.find(itm => itm.id === product.id).quantity =
-        product.quantity;
-    }
     return {
-      changeQuantity,
       products,
       totalProductsPrice
     };
@@ -79,4 +67,3 @@ export default {
   components: { AppPage, ProductList }
 };
 </script>
-

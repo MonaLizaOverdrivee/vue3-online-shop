@@ -3,11 +3,11 @@
     <div class="p-grid">
       <div class="p-col-2">
         <div class="container-filter">
-          <ShopProductFilter/>
+          <ShopProductFilter />
         </div>
       </div>
       <div class="p-col">
-        <ShopProductGrid :data="products"/>
+        <ShopProductGrid :data="products" />
       </div>
     </div>
   </AppPage>
@@ -18,24 +18,25 @@ import AppPage from "../components/ui/AppPage";
 import ShopProductGrid from "../components/shop/ShopProductGrid";
 import ShopProductFilter from "../components/shop/ShopProductFilter";
 import { useStore } from "vuex";
-import { useRoute} from 'vue-router'
+import { useRoute } from "vue-router";
 import { computed, onBeforeMount } from "vue";
 export default {
   setup() {
-    const route = useRoute()
-    const queryParam = computed(() => route.query)
+    const route = useRoute();
+    const queryParam = computed(() => route.query);
     onBeforeMount(() => {
-      store.dispatch("shop/getAllProducts")
-      store.dispatch("shop/getCategories")
+      store.dispatch("shop/getAllProducts");
+      store.dispatch("shop/getCategories");
     });
     const store = useStore();
-    console.log(store.getters["shop/products"])
-    const products = computed(() => store.getters["shop/products"]
-      .filter(itm => queryParam.value.search ? itm.title.toLowerCase().includes(queryParam.value.search.toLowerCase()) : true)
-      .filter(itm => queryParam.value.category ? itm.category === queryParam.value.category : true)
-      .sort((prev, next) => next.count - prev.count))
+    const products = computed(() =>
+      store.getters["shop/products"]
+        .filter(itm => queryParam.value.search ? itm.title.toLowerCase().includes(queryParam.value.search.toLowerCase()) : true)
+        .filter(itm => queryParam.value.category ? itm.category === queryParam.value.category : true)
+        .sort((prev, next) => next.count - prev.count)
+    );
     return {
-      products,
+      products
     };
   },
   components: { AppPage, ShopProductFilter, ShopProductGrid }

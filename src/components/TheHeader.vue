@@ -52,6 +52,6 @@ export default {
   border: 0 !important;
   margin: 0 -8px;
   padding: 0.7rem !important;
-  box-shadow: 0px 3px 4px -1px
+  box-shadow: 0px 3px 4px -1px;
 }
 </style>

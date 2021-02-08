@@ -10,13 +10,19 @@
         icon="pi pi-sun"
       />
     </div>
-    <div class="p-flex-column p-d-flex" :class="{'p-jc-between': $route.path === '/cart','p-jc-end':  $route.path === '/'}">
+    <div
+      class="p-flex-column p-d-flex"
+      :class="{
+        'p-jc-between': $route.path === '/cart',
+        'p-jc-end': $route.path === '/'
+      }"
+    >
       <Button
         icon="pi pi-times"
         class="p-button-rounded p-button-danger p-button-text p-as-end"
         @click="$store.commit('cart/REMOVE_PRODUCTS', id)"
         style="width: auto"
-         v-if="$route.path === '/cart'"
+        v-if="$route.path === '/cart'"
       />
       <div>
         <p class="p-text-right product-price">{{ price }} РУБ</p>
@@ -38,7 +44,7 @@
             })
           "
         />
-         <Button icon="pi pi-shopping-cart" label="В корзину" v-else></Button>
+        <Button icon="pi pi-shopping-cart" label="В корзину" v-else></Button>
       </div>
     </div>
   </div>
@@ -77,7 +83,6 @@ export default {
 .p-button.categories {
   padding-left: 0;
 }
-
 
 .p-inputnumber >>> .p-inputnumber-input:enabled:focus {
   box-shadow: none !important;
