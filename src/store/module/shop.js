@@ -5,24 +5,37 @@ export default {
   state() {
     return {
       products: {},
+      selectedProduct: {},
       categories: []
     };
   },
   getters: {
     products: ({ products }) => Object.keys(products).map(itm => products[itm]),
-    categories: ({ categories }) => categories
+    categories: ({ categories }) => categories,
+    selectedProduct: ({ selectedProduct }) => selectedProduct
     //
   },
   mutations: {
+    SET_SELECTED_PRODUCT(state, product) {
+      state.selectedProduct = product;
+    },
     SET_COUNT(state, payload) {
-      state.products[payload.id].count =  payload.count;
-      console.log(state.products[payload.id].count)
+      state.products[payload.id].count = payload.count;
     },
     SET_PRODUCTS(state, data) {
       state.products = data;
     },
+    REMOVE_PRODUCT(state, products) {
+      products.forEach(itm => delete state.products[itm.id]);
+    },
     SET_CATEGORIES(state, category) {
       state.categories = category;
+    },
+    ADD_NEW_PRODUCT(state, newProd) {
+      if (!newProd.id) newProd.id = Math.round(Math.random() * 1000);
+      state.products[newProd.id] = newProd;
+      console.log(newProd);
+      console.log(state.products);
     }
   },
   actions: {
@@ -34,10 +47,22 @@ export default {
       }, {});
       commit("SET_PRODUCTS", dataObject);
     },
+    async getSelectedProduct({ commit }, id) {
+      try {
+        const { data } = await requestToDatabase.get(`/products?id=${id}`);
+        commit("SET_SELECTED_PRODUCT", data[0]);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async getCategories({ commit }) {
       const { data } = await requestToDatabase.get("/categories");
 
       commit("SET_CATEGORIES", data);
+    },
+    async requestNewProduct({ commit }, product) {
+      //Запрос на добавление/изменение
+      commit("ADD_NEW_PRODUCT", product);
     }
   }
 

@@ -19,12 +19,13 @@ export default {
         command: () => {
           emit("update:modelValue", itm.type);
         }
-      }))
-        menu.unshift({label: 'Все', command: () => emit("update:modelValue", null)})
-        return menu
-      }
-
-      );
+      }));
+      menu.unshift({
+        label: "Все",
+        command: () => emit("update:modelValue", null)
+      });
+      return menu;
+    });
     return {
       menuItem
     };

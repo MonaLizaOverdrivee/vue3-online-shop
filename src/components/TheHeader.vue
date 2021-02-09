@@ -1,8 +1,8 @@
 <template>
   <Menubar :model="items">
     <template #start>
-        <h2 class="p-mt-0 p-mb-1" v-text="title"></h2>
-          <!-- <Button
+      <h2 class="p-mt-0 p-mb-1" v-text="title"></h2>
+      <!-- <Button
             label="Магазин"
             class="p-button-secondary p-button-text"
             @click="$router.push('/')"
@@ -33,21 +33,23 @@ export default {
         {
           label: "Магазин",
           icon: "",
-          to: '/',
-          visible: () => this.$route.meta.layout === 'main'
+          to: "/",
+          visible: () => this.$route.meta.layout === "main"
         },
         {
           label: "Менеджер",
           icon: "",
-          to: '/admin/product',
-          visible: () => this.$route.meta.layout === 'admin'
+          to: "/admin/product",
+          visible: () => this.$route.meta.layout === "admin"
         }
       ]
     };
   },
   computed: {
-    title(){
-      return this.$route.meta.layout !== 'admin' ? 'OnlineShop |' : 'Панель управления |'
+    title() {
+      return this.$route.meta.layout !== "admin"
+        ? "OnlineShop |"
+        : "Панель управления |";
     }
   },
   directives: {
@@ -59,7 +61,7 @@ export default {
 
 <style scoped>
 .p-menubar >>> .p-menuitem-link {
-  padding: 1rem  !important;
+  padding: 1rem !important;
 }
 .p-menubar {
   border: 0 !important;

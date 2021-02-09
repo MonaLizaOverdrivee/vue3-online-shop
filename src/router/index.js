@@ -12,6 +12,7 @@ const routes = [
   {
     path: "/product/:id",
     name: "Product",
+    props: true,
     component: () => import("../views/Product.vue"),
     meta: {
       layout: "main"
@@ -36,14 +37,14 @@ const routes = [
   },
   {
     path: "/admin",
-    name: 'Панель управления',
+    name: "Панель управления",
     component: () => import("../views/admin/Admin"),
-    meta:{ layout: 'admin' },
+    meta: { layout: "admin" },
     children: [
       {
-        path: 'product',
-        name: 'Менеджер продуктов',
-        component: () => import('../views/admin/AdminProduct')
+        path: "product",
+        name: "Менеджер продуктов",
+        component: () => import("../views/admin/AdminProduct")
       }
     ]
   }

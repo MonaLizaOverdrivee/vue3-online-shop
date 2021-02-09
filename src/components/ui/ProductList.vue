@@ -53,13 +53,13 @@
 <script>
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
-import { reactive, toRefs } from 'vue';
+import { reactive, toRefs } from "vue";
 export default {
   props: ["data"],
   setup(props) {
-    const product = reactive(props.data)
+    const product = reactive(props.data);
     return {
-      ...toRefs(product),
+      ...toRefs(product)
       // description: props.data.description,
     };
   },

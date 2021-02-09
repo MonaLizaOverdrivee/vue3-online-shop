@@ -31,8 +31,18 @@ export default {
     const store = useStore();
     const products = computed(() =>
       store.getters["shop/products"]
-        .filter(itm => queryParam.value.search ? itm.title.toLowerCase().includes(queryParam.value.search.toLowerCase()) : true)
-        .filter(itm => queryParam.value.category ? itm.category === queryParam.value.category : true)
+        .filter(itm =>
+          queryParam.value.search
+            ? itm.title
+                .toLowerCase()
+                .includes(queryParam.value.search.toLowerCase())
+            : true
+        )
+        .filter(itm =>
+          queryParam.value.category
+            ? itm.category === queryParam.value.category
+            : true
+        )
         .sort((prev, next) => next.count - prev.count)
     );
     return {

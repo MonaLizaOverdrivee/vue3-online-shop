@@ -53,6 +53,6 @@ export function useFormLogin() {
     lBlur,
     pBlur,
     onSubmit,
-    invalidSubmitMessage,
+    invalidSubmitMessage
   };
 }

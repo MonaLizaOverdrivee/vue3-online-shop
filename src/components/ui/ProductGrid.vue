@@ -11,14 +11,19 @@
         }}</span>
       </div>
       <div class="product-grid-item-content">
-        <img :src="img" :alt="title" />
+        <router-link :to="'/product/' + id" v-slot="{ navigate }"
+          ><img :src="img" :alt="title" @click="navigate"
+        /></router-link>
         <div class="product-name">{{ title }}</div>
         <div class="product-description">Описание товаров</div>
       </div>
       <div class="product-grid-item-bottom">
         <span class="product-price">{{ price }} РУБ</span>
         <Button
-          @click="addToCart();incQuantity()"
+          @click="
+            addToCart();
+            incQuantity();
+          "
           icon="pi pi-shopping-cart"
           :disabled="count === 0"
           v-if="!quantityInCart || count === 0"
@@ -45,46 +50,12 @@
 <script>
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
-import { computed, reactive, ref, toRefs } from "vue";
-import { useStore } from "vuex";
+import { addCartView } from "../../use/addCart";
 export default {
   props: ["data"],
   setup(props) {
-    const store = useStore();
-    const cart = computed(() => store.getters['cart/cart'])
-    const product = reactive(props.data);
-
-    const quantityInCart = computed(() => cart.value[props.data.id] ? cart.value[props.data.id] : 0 )
-    const quantity = ref(quantityInCart.value)
-    const inCart = computed(() => quantity.value === 0)
-    const quantityText = computed(() =>
-      props.data.count < 1
-        ? "Товар закончился"
-        : props.data.count < 11
-        ? "Осталось мало"
-        : "В наличии"
-    );
-    const quantityClass = computed(() =>
-      props.data.count < 1 ? "danger" : props.data.count < 11 ? "warning" : "success"
-    );
-    function incQuantity() {
-      store.commit('cart/SET_CART', { id: props.data.id, quantity: quantity.value })
-      if(cart.value[props.data.id] === props.data.count) store.commit('shop/SET_COUNT', { id: props.data.id, count: 0 })
-    }
-    function addToCart(){
-      quantity.value = 1
-    }
     return {
-      addToCart,
-      cart,
-      inCart,
-      ...toRefs(product),
-      // description: props.data.description,
-      incQuantity,
-      quantityText,
-      quantityClass,
-      quantity,
-      quantityInCart
+      ...addCartView(props)
     };
   },
   components: { Button, InputNumber }
