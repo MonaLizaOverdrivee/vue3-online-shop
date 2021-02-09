@@ -8,7 +8,7 @@
         </div>
         <span :class="'count-quantity count-quantity-' + quantityClass">{{
           quantityText
-        }}{{count}}</span>
+        }}</span>
       </div>
       <div class="product-grid-item-content">
         <img :src="img" :alt="title" />
@@ -21,11 +21,11 @@
           @click="addToCart();incQuantity()"
           icon="pi pi-shopping-cart"
           :disabled="count === 0"
-          v-if="inCart"
+          v-if="!quantityInCart || count === 0"
         ></Button>
         <!-- Использовал v-show вместо v-else из-за ошибки в самом компаненте фрайморка который пытается ссылаться на удалённый элемент -->
         <InputNumber
-          v-show="!inCart"
+          v-show="quantityInCart && count !== 0"
           :id="id + 'count'"
           v-model="quantity"
           showButtons
@@ -34,7 +34,7 @@
           decrementButtonIcon="pi pi-minus"
           mode="decimal"
           :min="0"
-          :max="99"
+          :max="count"
           @input="incQuantity"
         />
       </div>
@@ -52,10 +52,11 @@ export default {
   setup(props) {
     const store = useStore();
     const cart = computed(() => store.getters['cart/cart'])
-    const quantityInCart = computed(() => cart.value[props.data.id] ? cart.value[props.data.id] : 0 )
     const product = reactive(props.data);
-    const inCart = computed(() => quantity.value === 0)
+
+    const quantityInCart = computed(() => cart.value[props.data.id] ? cart.value[props.data.id] : 0 )
     const quantity = ref(quantityInCart.value)
+    const inCart = computed(() => quantity.value === 0)
     const quantityText = computed(() =>
       props.data.count < 1
         ? "Товар закончился"
@@ -68,32 +69,22 @@ export default {
     );
     function incQuantity() {
       store.commit('cart/SET_CART', { id: props.data.id, quantity: quantity.value })
-      store.commit('shop/SET_COUNT', { id: props.data.id, count: quantity.value })
+      if(cart.value[props.data.id] === props.data.count) store.commit('shop/SET_COUNT', { id: props.data.id, count: 0 })
     }
     function addToCart(){
       quantity.value = 1
-      // console.log(toRefs(product))
     }
-    // function removeInCart() {
-    //    store.commit('cart/SET_CART', {id: product.id, quantity: -1})
-    //   store.commit('shop/SET_COUNT', {id: product.id, count: 1})
-    // }
     return {
       addToCart,
       cart,
       inCart,
       ...toRefs(product),
-      // price: props.data.price,
-      // title: props.data.title,
-      // img: props.data.img,
       // description: props.data.description,
-      // category: props.data.category,
-      // count: computed(() => props.data.count),
-      // id: props.data.id,
       incQuantity,
       quantityText,
       quantityClass,
-      quantity
+      quantity,
+      quantityInCart
     };
   },
   components: { Button, InputNumber }

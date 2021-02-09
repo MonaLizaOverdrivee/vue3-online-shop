@@ -33,6 +33,19 @@ const routes = [
     meta: {
       layout: "auth"
     }
+  },
+  {
+    path: "/admin",
+    name: 'Панель управления',
+    component: () => import("../views/admin/Admin"),
+    meta:{ layout: 'admin' },
+    children: [
+      {
+        path: 'product',
+        name: 'Менеджер продуктов',
+        component: () => import('../views/admin/AdminProduct')
+      }
+    ]
   }
 ];
 

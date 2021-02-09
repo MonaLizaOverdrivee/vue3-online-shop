@@ -1,6 +1,6 @@
 <template>
   <div class="p-col-12 p-d-flex product-list">
-    <img :src="image" class="product-img p-shadow-2" />
+    <img :src="img" class="product-img p-shadow-2" />
     <div class="product-info p-ml-3">
       <h3 class="p-mt-0 p-mb-1">{{ title }}</h3>
       <p class="p-m-0">Описание товара</p>
@@ -36,10 +36,10 @@
           decrementButtonIcon="pi pi-minus"
           mode="decimal"
           :min="1"
-          :max="99"
+          :max="count"
           @input="
             $store.commit('cart/CHANGE_QUANTITY', {
-              quantity,
+              quantity: $event.value,
               id
             })
           "
@@ -53,17 +53,14 @@
 <script>
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
+import { reactive, toRefs } from 'vue';
 export default {
   props: ["data"],
   setup(props) {
+    const product = reactive(props.data)
     return {
-      quantity: props.data.quantity,
-      price: props.data.price,
-      title: props.data.title,
-      image: props.data.img,
+      ...toRefs(product),
       // description: props.data.description,
-      category: props.data.category,
-      id: props.data.id
     };
   },
   components: { InputNumber, Button }

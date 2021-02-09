@@ -3,11 +3,11 @@
     <div class="p-grid">
       <div class="p-col-2">
         <div class="container-filter">
-          <ShopProductFilter />
+          <ShopFilter />
         </div>
       </div>
       <div class="p-col">
-        <ShopProductGrid :data="products" />
+        <ShopGrid :data="products" />
       </div>
     </div>
   </AppPage>
@@ -15,8 +15,8 @@
 
 <script>
 import AppPage from "../components/ui/AppPage";
-import ShopProductGrid from "../components/shop/ShopProductGrid";
-import ShopProductFilter from "../components/shop/ShopProductFilter";
+import ShopGrid from "../components/shop/ShopGrid";
+import ShopFilter from "../components/shop/ShopFilter";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed, onBeforeMount } from "vue";
@@ -39,7 +39,7 @@ export default {
       products
     };
   },
-  components: { AppPage, ShopProductFilter, ShopProductGrid }
+  components: { AppPage, ShopFilter, ShopGrid }
 };
 </script>
 

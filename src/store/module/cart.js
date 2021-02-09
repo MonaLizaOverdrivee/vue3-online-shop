@@ -28,8 +28,9 @@ export default {
       state.products = products;
     },
     CHANGE_QUANTITY(state, value) {
-      const index = state.cart.findIndex(itm => itm.id === value.id)
-      state.cart[index].quantity = value.quantity;
+      console.log(value)
+      const index = state.products.findIndex(itm => itm.id === value.id)
+      state.products[index].quantity = value.quantity;
       state.cart[value.id] = value.quantity
     },
     REMOVE_PRODUCTS(state, id) {

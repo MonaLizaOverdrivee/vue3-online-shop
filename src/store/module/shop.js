@@ -15,7 +15,7 @@ export default {
   },
   mutations: {
     SET_COUNT(state, payload) {
-      state.products[payload.id].count = state.products[payload.id].count - payload.count;
+      state.products[payload.id].count =  payload.count;
       console.log(state.products[payload.id].count)
     },
     SET_PRODUCTS(state, data) {
