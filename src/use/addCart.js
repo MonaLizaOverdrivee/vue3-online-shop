@@ -1,7 +1,7 @@
 import { computed, reactive, ref, toRefs } from "vue";
 import { useStore } from "vuex";
 
-export function addCartView(props) {
+export function useAddCart(props) {
   const store = useStore();
   const cart = computed(() => store.getters["cart/cart"]);
   const product = reactive(props.data);
@@ -10,20 +10,6 @@ export function addCartView(props) {
     cart.value[props.data.id] ? cart.value[props.data.id] : 0
   );
   const quantity = ref(quantityInCart.value);
-  const quantityText = computed(() =>
-    props.data.count < 1
-      ? "Товар закончился"
-      : props.data.count < 11
-      ? "Осталось мало"
-      : "В наличии"
-  );
-  const quantityClass = computed(() =>
-    props.data.count < 1
-      ? "danger"
-      : props.data.count < 11
-      ? "warning"
-      : "success"
-  );
   function incQuantity() {
     store.commit("cart/SET_CART", {
       id: props.data.id,
@@ -40,8 +26,6 @@ export function addCartView(props) {
     ...toRefs(product),
     // description: props.data.description,
     incQuantity,
-    quantityText,
-    quantityClass,
     quantity,
     quantityInCart
   };

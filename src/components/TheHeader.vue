@@ -32,14 +32,20 @@ export default {
       items: [
         {
           label: "Магазин",
-          icon: "",
+          // icon: "",
           to: "/",
           visible: () => this.$route.meta.layout === "main"
         },
         {
-          label: "Менеджер",
-          icon: "",
+          label: "Менеджер товаров",
+          icon: "pi pi-sliders-h",
           to: "/admin/product",
+          visible: () => this.$route.meta.layout === "admin"
+        },
+        {
+          label: "Редактор категории",
+          icon: "pi pi-tags",
+          to: "/admin/categories",
           visible: () => this.$route.meta.layout === "admin"
         }
       ]
@@ -60,9 +66,6 @@ export default {
 </script>
 
 <style scoped>
-.p-menubar >>> .p-menuitem-link {
-  padding: 1rem !important;
-}
 .p-menubar {
   border: 0 !important;
   margin: 0 -8px;

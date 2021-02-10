@@ -71,13 +71,19 @@
     </Column>
   </DataTable>
   <Dialog
+    dismissableMask
     v-model:visible="productDialog"
     :style="{ width: '450px' }"
     header="Детали"
     :modal="true"
     class="p-fluid"
+    @hide="hideDialogProduct"
   >
-    <TheTableItemDialog :product="selectedProducts" :categoryData="category" />
+    <ProductTableleItemModal
+      :product="selectedProducts"
+      :categoryData="category"
+      :submitFlag="submitFlag"
+    />
     <template #footer>
       <Button
         label="Отмена"
@@ -127,7 +133,7 @@ import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import TheTableItemDialog from "./TheTableItemDialog";
+import ProductTableleItemModal from "./ProductTableleItemModal";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 export default {
@@ -137,23 +143,35 @@ export default {
     store.dispatch("shop/getCategories");
     const products = computed(() => props.data);
     const category = computed(() => store.getters["shop/categories"]);
-    console.log(category.value);
 
     const productDialog = ref(false);
+    const submitFlag = ref(false);
+    const MODEL_REQUIRED_FORM = {
+      title: null,
+      count: null
+    };
     function openNew() {
+      selectedProducts.value = MODEL_REQUIRED_FORM
+      oldSelectedProducts.value = selectedProducts.value
       productDialog.value = true;
-      selectedProducts.value = {};
+      submitFlag.value = true;
     }
     function editProduct(value) {
       productDialog.value = true;
       selectedProducts.value = value;
     }
     function hideDialogProduct() {
-      selectedProducts.value = null;
+      console.log(checkChangeData.value)
+      if(checkChangeData.value) {
+        console.log('ТОчно выйти')
+      }else {
+      selectedProducts.value = MODEL_REQUIRED_FORM;
       productDialog.value = false;
+      }
     }
     const deleteProductsDialog = ref(false);
-    const selectedProducts = ref(null);
+    const selectedProducts = ref(MODEL_REQUIRED_FORM);
+    const oldSelectedProducts = ref(null);
     function confirmDeleteSelected() {
       deleteProductsDialog.value = true;
     }
@@ -165,16 +183,34 @@ export default {
       store.commit("shop/REMOVE_PRODUCT", selectedProducts.value);
       deleteProductsDialog.value = false;
     }
+    const checkChangeData = computed(() =>
+      Object.keys(oldSelectedProducts.value).reduce((acc, itm) => {
+        return oldSelectedProducts.value[itm] === selectedProducts.value[itm] && acc
+      }, true)
+    )
+    const checkRequiredForm = computed(() =>
+      Object.keys(selectedProducts.value).reduce((acc, itm) => {
+        return selectedProducts.value[itm] && acc;
+      }, true)
+    );
     async function saveProduct() {
-      try {
-        await store.dispatch("shop/requestNewProduct", selectedProducts.value);
-        selectedProducts.value = null;
-        productDialog.value = false;
-      } catch (e) {
-        console.log(e);
+      if (checkRequiredForm.value) {
+        try {
+          await store.dispatch(
+            "shop/requestNewProduct",
+            selectedProducts.value
+          );
+          selectedProducts.value = MODEL_REQUIRED_FORM;
+          productDialog.value = false;
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        submitFlag.value = false;
       }
     }
     return {
+      submitFlag,
       editProduct,
       productDialog,
       confirmDeleteSelectedOnce,
@@ -196,7 +232,7 @@ export default {
     DataTable,
     Column,
     Dialog,
-    TheTableItemDialog
+    ProductTableleItemModal
   }
 };
 </script>

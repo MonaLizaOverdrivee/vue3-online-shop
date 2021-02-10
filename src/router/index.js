@@ -3,10 +3,11 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "Магазин",
+    name: "Shop",
     component: () => import("../views/Shop.vue"),
     meta: {
-      layout: "main"
+      layout: "main",
+      title: "Магазин"
     }
   },
   {
@@ -15,15 +16,17 @@ const routes = [
     props: true,
     component: () => import("../views/Product.vue"),
     meta: {
-      layout: "main"
+      layout: "main",
+      title: "Продуты"
     }
   },
   {
     path: "/cart",
-    name: "Корзина",
+    name: "Cart",
     component: () => import("../views/Cart.vue"),
     meta: {
-      layout: "main"
+      layout: "main",
+      title: "Корзина"
     }
   },
 
@@ -32,19 +35,34 @@ const routes = [
     name: "Auth",
     component: () => import("../views/Auth.vue"),
     meta: {
-      layout: "auth"
+      layout: "auth",
+      title: "Вход"
     }
   },
   {
     path: "/admin",
-    name: "Панель управления",
+    name: "Dashboard",
+    redirect: "/admin/product",
     component: () => import("../views/admin/Admin"),
-    meta: { layout: "admin" },
+    meta: { layout: "admin", title: "Панель управления" },
     children: [
       {
         path: "product",
-        name: "Менеджер продуктов",
+        name: "AdminProduct",
+        meta: {
+          layout: "admin",
+          title: "Менеджер товаров"
+        },
         component: () => import("../views/admin/AdminProduct")
+      },
+      {
+        path: "categories",
+        name: "Categories",
+        meta: {
+          layout: "admin",
+          title: "Редактор категории"
+        },
+        component: () => import("../views/admin/AdminCategories")
       }
     ]
   }

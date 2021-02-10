@@ -10,7 +10,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed, onMounted } from "vue";
-import { addCartView } from "../use/addCart";
+import { useAddCart } from "../use/addCart";
 export default {
   props: ["id"],
   setup(props) {
@@ -19,7 +19,7 @@ export default {
       await store.dispatch("shop/getSelectedProduct", props.id);
     });
     const product = computed(() => store.getters["shop/selectedProduct"]);
-    console.log(addCartView);
+    console.log(useAddCart);
     return {
       product
     };

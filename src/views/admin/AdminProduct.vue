@@ -1,12 +1,12 @@
 <template>
   <AppPage>
-    <TheTable :data="products" />
+    <ProductTable :data="products" />
   </AppPage>
 </template>
 
 <script>
 import AppPage from "../../components/ui/AppPage";
-import TheTable from "../../components/admin/product/TheTable";
+import ProductTable from "../../components/admin/product/ProductTable";
 import { useStore } from "vuex";
 import { computed, onBeforeMount } from "vue";
 export default {
@@ -17,7 +17,7 @@ export default {
       products: computed(() => store.getters["shop/products"])
     };
   },
-  components: { AppPage, TheTable }
+  components: { AppPage, ProductTable }
 };
 </script>
 

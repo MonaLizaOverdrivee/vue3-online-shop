@@ -4,20 +4,20 @@
       <template #right>
         <Button
           icon="pi pi-th-large"
-          :class="['grid', { 'p-button-outlined': layout === 'list' }]"
-          @click="layout = 'grid'"
+          :class="['grid', { 'p-button-outlined': layout === 'List' }]"
+          @click="layout = 'Grid'"
         />
         <Button
           icon="pi pi-bars"
-          :class="['list', { 'p-button-outlined': layout === 'grid' }]"
-          @click="layout = 'list'"
+          :class="['list', { 'p-button-outlined': layout === 'Grid' }]"
+          @click="layout = 'List'"
         />
       </template>
     </Toolbar>
   </div>
   <div class="p-grid">
     <component
-      :is="'product-' + layout"
+      :is="'ShopView' + layout"
       v-for="product in products"
       :key="product.id"
       :data="product"
@@ -28,20 +28,19 @@
 <script>
 import Button from "primevue/button";
 import Toolbar from "primevue/toolbar";
-import ProductGrid from "../ui/ProductGrid";
-import ProductList from "../ui/ProductList";
-import { computed, ref } from "vue";
+import ShopViewGrid from "../shop/ShopViewGrid";
+import ShopViewList from "../shop/ShopViewList";
+import { ref } from "vue";
 
 export default {
-  props: ["data"],
-  setup(props) {
-    const layout = ref("grid");
+  props: ["products"],
+  setup() {
+    const layout = ref("Grid");
     return {
-      products: computed(() => props.data),
       layout
     };
   },
-  components: { ProductGrid, ProductList, Toolbar, Button }
+  components: { ShopViewGrid, ShopViewList, Toolbar, Button }
 };
 </script>
 

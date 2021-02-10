@@ -44,7 +44,7 @@
 
 <script>
 import AppPage from "../components/ui/AppPage";
-import ProductList from "../components/ui/ProductList";
+import ProductList from "../components/cart/ProductList";
 import { useStore } from "vuex";
 import { computed, onMounted } from "vue";
 

@@ -1,24 +1,23 @@
 <template>
   <div class="p-d-flex p-jc-center">
+    <pre>{{ product }}</pre>
     <img :src="product.img" :alt="product.img" class="product-image" />
   </div>
   <div class="p-field">
     <label for="img_url">URL картинки</label>
-    <InputText
-      id="img_url"
-      v-model.trim="dataProduct.img"
-      :class="{ 'p-invalid': submitted && !product.name }"
-    />
-    <small class="p-error">Name is required.</small>
+    <InputText autofocus required id="img_url" v-model.trim="dataProduct.img" />
   </div>
   <div class="p-field">
     <label for="name">Наименование</label>
     <InputText
+      required
       id="title"
       v-model.trim="dataProduct.title"
-      :class="{ 'p-invalid': submitted && !product.name }"
+      :class="{ 'p-invalid': !dataProduct.title && !submitFlag }"
     />
-    <small class="p-error">Name is required.</small>
+    <small class="p-error" v-if="!dataProduct.title && !submitFlag"
+      >Укажите наименование товара</small
+    >
   </div>
   <div class="p-field">
     <label for="description">Описание</label>
@@ -30,11 +29,14 @@
     />
   </div>
   <div class="p-field">
-    <label class="p-mb-3">Category</label>
-    <div class="p-formgrid p-grid">
+    <label class="p-mb-3">Категория</label>
+    <div
+      class="p-formgrid p-grid"
+      :class="{ 'p-invalid': !dataProduct.category && !submitFlag }"
+    >
       <div
         class="p-field-radiobutton p-col-6"
-        v-for="itm in categories"
+        v-for="itm in categoryData"
         :key="itm.id"
       >
         <RadioButton
@@ -45,6 +47,9 @@
         />
         <label :for="'category' + itm.id">{{ itm.title }}</label>
       </div>
+      <small class="p-error" v-if="!dataProduct.category && !submitFlag"
+        >Выбирете категорию</small
+      >
     </div>
   </div>
   <div class="p-formgrid p-grid">
@@ -56,11 +61,23 @@
         mode="currency"
         currency="RUB"
         locale="ru-RU"
+        :class="{ 'p-invalid': !dataProduct.price && !submitFlag }"
       />
+      <small class="p-error" v-if="!dataProduct.price && !submitFlag"
+        >Укажите цену товара за шт.</small
+      >
     </div>
     <div class="p-field p-col">
       <label for="quantity">Количество</label>
-      <InputNumber id="Count" v-model="dataProduct.count" integeronly />
+      <InputNumber
+        id="Count"
+        v-model="dataProduct.count"
+        integeronly
+        :class="{ 'p-invalid': !dataProduct.count && !submitFlag }"
+      />
+      <small class="p-error" v-if="!dataProduct.count && !submitFlag"
+        >Укажите количество товаров</small
+      >
     </div>
   </div>
 </template>
@@ -73,13 +90,12 @@ import Textarea from "primevue/textarea";
 import { computed } from "vue";
 
 export default {
-  props: ["product", "categoryData"],
+  props: ["product", "categoryData", "submitFlag"],
   setup(props) {
     const dataProduct = computed(() => props.product);
-    const categories = computed(() => props.categoryData);
     return {
       dataProduct,
-      categories
+      submitig: computed(() => props.submitFlag)
     };
   },
   components: { RadioButton, InputNumber, InputText, Textarea }

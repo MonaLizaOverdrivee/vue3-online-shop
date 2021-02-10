@@ -7,7 +7,7 @@
         </div>
       </div>
       <div class="p-col">
-        <ShopGrid :data="products" />
+        <ShopView :products="products" />
       </div>
     </div>
   </AppPage>
@@ -15,7 +15,7 @@
 
 <script>
 import AppPage from "../components/ui/AppPage";
-import ShopGrid from "../components/shop/ShopGrid";
+import ShopView from "../components/shop/ShopView";
 import ShopFilter from "../components/shop/ShopFilter";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
@@ -24,9 +24,9 @@ export default {
   setup() {
     const route = useRoute();
     const queryParam = computed(() => route.query);
-    onBeforeMount(() => {
-      store.dispatch("shop/getAllProducts");
-      store.dispatch("shop/getCategories");
+    onBeforeMount(async () => {
+      await store.dispatch("shop/getAllProducts");
+      await store.dispatch("shop/getCategories");
     });
     const store = useStore();
     const products = computed(() =>
@@ -49,7 +49,7 @@ export default {
       products
     };
   },
-  components: { AppPage, ShopFilter, ShopGrid }
+  components: { AppPage, ShopFilter, ShopView }
 };
 </script>
 

@@ -6,9 +6,7 @@
           <i class="pi pi-tag product-category-icon"></i>
           <span class="product-category">{{ category }}</span>
         </div>
-        <span :class="'count-quantity count-quantity-' + quantityClass">{{
-          quantityText
-        }}</span>
+        <span :class="quantityClass" v-text="quantityText"></span>
       </div>
       <div class="product-grid-item-content">
         <router-link :to="'/product/' + id" v-slot="{ navigate }"
@@ -50,12 +48,16 @@
 <script>
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
-import { addCartView } from "../../use/addCart";
+import { useAddCart } from "../../use/addCart";
+import { useCountStatusStyle } from "../../use/countViewStyle";
+import { computed } from "vue";
 export default {
   props: ["data"],
   setup(props) {
+    const count = computed(() => props.data.count);
     return {
-      ...addCartView(props)
+      ...useCountStatusStyle(count),
+      ...useAddCart(props)
     };
   },
   components: { Button, InputNumber }
