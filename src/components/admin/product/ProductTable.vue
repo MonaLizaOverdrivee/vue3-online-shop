@@ -71,13 +71,14 @@
     </Column>
   </DataTable>
   <Dialog
-    dismissableMask
+    :closable="false"
     v-model:visible="productDialog"
     :style="{ width: '450px' }"
     header="Детали"
     :modal="true"
     class="p-fluid"
     @hide="hideDialogProduct"
+    :autoZIndex="false"
   >
     <ProductTableleItemModal
       :product="selectedProducts"
@@ -124,6 +125,7 @@
       />
     </template>
   </Dialog>
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <script>
@@ -134,6 +136,8 @@ import Dialog from "primevue/dialog";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ProductTableleItemModal from "./ProductTableleItemModal";
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from "primevue/useconfirm";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 export default {
@@ -145,6 +149,8 @@ export default {
     const category = computed(() => store.getters["shop/categories"]);
 
     const productDialog = ref(false);
+     const confirm = useConfirm();
+     console.log(confirm)
     const submitFlag = ref(false);
     const MODEL_REQUIRED_FORM = {
       title: null,
@@ -152,7 +158,7 @@ export default {
     };
     function openNew() {
       selectedProducts.value = MODEL_REQUIRED_FORM
-      oldSelectedProducts.value = selectedProducts.value
+      oldSelectedProducts.value = Object.assign({}, selectedProducts.value)
       productDialog.value = true;
       submitFlag.value = true;
     }
@@ -162,8 +168,19 @@ export default {
     }
     function hideDialogProduct() {
       console.log(checkChangeData.value)
-      if(checkChangeData.value) {
-        console.log('ТОчно выйти')
+      if(!checkChangeData.value) {
+        confirm.require({
+            message: 'Есть несохранённые данные, всё ровно закрыть?',
+            header: 'Подтвердите действие',
+            icon: 'pi pi-exclamation-triangle',
+            accept: () => {
+                selectedProducts.value = MODEL_REQUIRED_FORM;
+                productDialog.value = false;
+            },
+            reject: () => {
+                //callback to execute when user rejects the action
+            }
+        });
       }else {
       selectedProducts.value = MODEL_REQUIRED_FORM;
       productDialog.value = false;
@@ -185,7 +202,9 @@ export default {
     }
     const checkChangeData = computed(() =>
       Object.keys(oldSelectedProducts.value).reduce((acc, itm) => {
-        return oldSelectedProducts.value[itm] === selectedProducts.value[itm] && acc
+        console.log('old', oldSelectedProducts.value[itm])
+        console.log('current', selectedProducts.value[itm])
+        return (oldSelectedProducts.value[itm] === selectedProducts.value[itm]) && acc
       }, true)
     )
     const checkRequiredForm = computed(() =>
@@ -232,7 +251,8 @@ export default {
     DataTable,
     Column,
     Dialog,
-    ProductTableleItemModal
+    ProductTableleItemModal,
+    ConfirmDialog
   }
 };
 </script>
