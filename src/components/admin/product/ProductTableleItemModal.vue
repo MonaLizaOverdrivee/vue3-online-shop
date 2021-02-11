@@ -13,9 +13,9 @@
       required
       id="title"
       v-model.trim="dataProduct.title"
-      :class="{ 'p-invalid': !dataProduct.title && !submitFlag }"
+      :class="{ 'p-invalid': !dataProduct.title && submitFlag }"
     />
-    <small class="p-error" v-if="!dataProduct.title && !submitFlag"
+    <small class="p-error" v-if="!dataProduct.title && submitFlag"
       >Укажите наименование товара</small
     >
   </div>

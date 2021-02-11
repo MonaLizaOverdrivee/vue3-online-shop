@@ -1,17 +1,19 @@
 <template>
+  <pre>{{ selectedProducts }}</pre>
+  <button @click="testFoo">clicj</button>
   <Toolbar class="p-mb-4">
     <template #left>
       <Button
         label="Создать"
         icon="pi pi-plus"
         class="p-button-success p-mr-2"
-        @click="openNew"
+        @click="showModal('new')"
       />
       <Button
         label="Удалить"
         icon="pi pi-trash"
         class="p-button-danger"
-        @click="confirmDeleteSelected"
+        @click="confirmDeleteSelected(selectedProducts)"
         :disabled="!selectedProducts || !selectedProducts.length"
       />
     </template>
@@ -33,7 +35,7 @@
       />
     </template>
   </Toolbar>
-  <DataTable :value="products" v-model:selection="selectedProducts">
+  <DataTable :value="data" v-model:selection="selectedProducts" paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown" :rowsPerPageOptions="[5,10,25]">
     <Column
       selectionMode="multiple"
       headerStyle="width: 3rem"
@@ -60,68 +62,45 @@
         <Button
           icon="pi pi-pencil"
           class="p-button-rounded p-button-success p-mr-2"
-          @click="editProduct(slotProps.data)"
+          @click="
+            edit(slotProps.data);
+            showModal('edit');
+          "
         />
         <Button
           icon="pi pi-trash"
           class="p-button-rounded p-button-warning"
-          @click="confirmDeleteSelectedOnce([slotProps.data])"
+          @click="confirmDeleteSelected([slotProps.data])"
         />
       </template>
     </Column>
   </DataTable>
   <Dialog
     :closable="false"
-    v-model:visible="productDialog"
+    v-model:visible="visibilityModal"
     :style="{ width: '450px' }"
     header="Детали"
     :modal="true"
     class="p-fluid"
-    @hide="hideDialogProduct"
     :autoZIndex="false"
   >
     <ProductTableleItemModal
-      :product="selectedProducts"
+      :product="typeProduct"
       :categoryData="category"
-      :submitFlag="submitFlag"
+      :submitFlag="checkRequiredForm"
     />
     <template #footer>
       <Button
         label="Отмена"
         icon="pi pi-times"
         class="p-button-text"
-        @click="hideDialogProduct"
+        @click="hideModal(true)"
       />
       <Button
         label="Сохранить"
         icon="pi pi-check"
         class="p-button-text"
-        @click="saveProduct"
-      />
-    </template>
-  </Dialog>
-  <Dialog
-    v-model:visible="deleteProductsDialog"
-    :style="{ width: '450px' }"
-    header="Confirm"
-    :modal="true"
-  >
-    <div class="p-d-flex p-ai-center p-jc-center">
-      <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem" />
-      <span>Вы уверенны что хотите удалить выбранные позиции</span>
-    </div>
-    <template #footer>
-      <Button
-        label="Нет"
-        icon="pi pi-times"
-        class="p-button-text"
-        @click="deleteProductsDialog = false"
-      />
-      <Button
-        label="Да"
-        icon="pi pi-check"
-        class="p-button-text"
-        @click="deleteProducts"
+        @click="typeSubmit();hideModal(false)"
       />
     </template>
   </Dialog>
@@ -136,112 +115,100 @@ import Dialog from "primevue/dialog";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ProductTableleItemModal from "./ProductTableleItemModal";
-import ConfirmDialog from 'primevue/confirmdialog';
+import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import { useDelete } from "../../../use/admin/product/deleteProduct";
+import { useEdit } from "../../../use/admin/product/editProduct";
+import { useAdd } from "../../../use/admin/product/addProduct";
 export default {
   props: ["data"],
-  setup(props) {
+  setup() {
     const store = useStore();
     store.dispatch("shop/getCategories");
-    const products = computed(() => props.data);
     const category = computed(() => store.getters["shop/categories"]);
+    const confirm = useConfirm();
+    const selectedProducts = ref(null);
+    const type = ref('')
+    const { checkChangeData, edit, changeableProduct, changeDataProduct } = useEdit();
+    const { save, newProduct, checkRequiredForm } = useAdd();
 
-    const productDialog = ref(false);
-     const confirm = useConfirm();
-     console.log(confirm)
-    const submitFlag = ref(false);
-    const MODEL_REQUIRED_FORM = {
-      title: null,
-      count: null
-    };
-    function openNew() {
-      selectedProducts.value = MODEL_REQUIRED_FORM
-      oldSelectedProducts.value = Object.assign({}, selectedProducts.value)
-      productDialog.value = true;
-      submitFlag.value = true;
+    const visibilityModal = ref(false);
+    function showModal(val) {
+      type.value = val
+      visibilityModal.value = true;
     }
-    function editProduct(value) {
-      productDialog.value = true;
-      selectedProducts.value = value;
-    }
-    function hideDialogProduct() {
-      console.log(checkChangeData.value)
-      if(!checkChangeData.value) {
+    function hideModal(bool) {
+      if (!checkChangeData.value && bool) {
         confirm.require({
-            message: 'Есть несохранённые данные, всё ровно закрыть?',
-            header: 'Подтвердите действие',
-            icon: 'pi pi-exclamation-triangle',
-            accept: () => {
-                selectedProducts.value = MODEL_REQUIRED_FORM;
-                productDialog.value = false;
-            },
-            reject: () => {
-                //callback to execute when user rejects the action
-            }
+          acceptLabel: "Да",
+          rejectLabel: "Нет",
+          message: "Есть несохранённые данные, всё равно закрыть?",
+          header: "Подтвердите действие",
+          icon: "pi pi-exclamation-triangle",
+          accept: () => {
+            selectedProducts.value = null;
+            visibilityModal.value = false;
+          },
         });
-      }else {
-      selectedProducts.value = MODEL_REQUIRED_FORM;
-      productDialog.value = false;
-      }
-    }
-    const deleteProductsDialog = ref(false);
-    const selectedProducts = ref(MODEL_REQUIRED_FORM);
-    const oldSelectedProducts = ref(null);
-    function confirmDeleteSelected() {
-      deleteProductsDialog.value = true;
-    }
-    function confirmDeleteSelectedOnce(value) {
-      deleteProductsDialog.value = true;
-      selectedProducts.value = value;
-    }
-    function deleteProducts() {
-      store.commit("shop/REMOVE_PRODUCT", selectedProducts.value);
-      deleteProductsDialog.value = false;
-    }
-    const checkChangeData = computed(() =>
-      Object.keys(oldSelectedProducts.value).reduce((acc, itm) => {
-        console.log('old', oldSelectedProducts.value[itm])
-        console.log('current', selectedProducts.value[itm])
-        return (oldSelectedProducts.value[itm] === selectedProducts.value[itm]) && acc
-      }, true)
-    )
-    const checkRequiredForm = computed(() =>
-      Object.keys(selectedProducts.value).reduce((acc, itm) => {
-        return selectedProducts.value[itm] && acc;
-      }, true)
-    );
-    async function saveProduct() {
-      if (checkRequiredForm.value) {
-        try {
-          await store.dispatch(
-            "shop/requestNewProduct",
-            selectedProducts.value
-          );
-          selectedProducts.value = MODEL_REQUIRED_FORM;
-          productDialog.value = false;
-        } catch (e) {
-          console.log(e);
-        }
       } else {
-        submitFlag.value = false;
+        selectedProducts.value = null;
+        visibilityModal.value = false;
       }
     }
+  const typeSubmit = computed(() => type.value === 'edit' ? changeDataProduct : save)
+  const typeProduct = computed(() => type.value === 'edit' ? changeableProduct.value : newProduct)
+    // const MODEL_REQUIRED_FORM = {
+      //   count: null,
+    //   title: null,
+    //   category: null,
+    //   price: null,
+    //   img: null
+    // };
+
+    // function openNew() {
+      //   selectedProducts.value = MODEL_REQUIRED_FORM;
+    //   visibilityModal.value = true;
+    //   submitFlag.value = true;
+    // }
+    // const submitFlag = ref(false);
+    // const checkRequiredForm = computed(() =>
+    //   Object.keys(selectedProducts.value).reduce((acc, itm) => {
+    //     return selectedProducts.value[itm] && acc;
+    //   }, true)
+    // );
+
+    // async function saveProduct() {
+    //   if (checkRequiredForm.value) {
+    //     try {
+    //       await store.dispatch(
+    //         "shop/requestchangeableProduct",
+    //         selectedProducts.value
+    //       );
+    //       selectedProducts.value = MODEL_REQUIRED_FORM;
+    //       visibilityModal.value = false;
+    //     } catch (e) {
+    //       console.log(e);
+    //     }
+    //   } else {
+    //     submitFlag.value = false;
+    //   }
+    // }
+    console.log(checkRequiredForm)
     return {
-      submitFlag,
-      editProduct,
-      productDialog,
-      confirmDeleteSelectedOnce,
-      products,
-      deleteProducts,
+      visibilityModal,
+      showModal,
+      hideModal,
+      checkRequiredForm,
+      // submitFlag,
+      category,
+      typeSubmit,
+      typeProduct,
+
       selectedProducts,
-      confirmDeleteSelected,
-      deleteProductsDialog,
-      openNew,
-      saveProduct,
-      hideDialogProduct,
-      category
+      edit,
+      ...useDelete(selectedProducts),
     };
   },
   components: {
@@ -252,8 +219,8 @@ export default {
     Column,
     Dialog,
     ProductTableleItemModal,
-    ConfirmDialog
-  }
+    ConfirmDialog,
+  },
 };
 </script>
 
