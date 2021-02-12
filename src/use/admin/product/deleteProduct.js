@@ -1,7 +1,7 @@
 import { useStore } from "vuex";
 import { useConfirm } from "primevue/useconfirm";
 
-export function useDelete(product){
+export function useDelete(product) {
   const store = useStore();
   const confirm = useConfirm();
 
@@ -20,5 +20,5 @@ export function useDelete(product){
   }
   return {
     confirmDeleteSelected
-  }
+  };
 }

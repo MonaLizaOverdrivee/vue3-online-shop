@@ -32,11 +32,12 @@ export default {
       state.categories = category;
     },
     ADD_NEW_PRODUCT(state, newProd) {
-      newProd.id = Math.round(Math.random() * 1000);
-      state.products[newProd.id] = newProd;
-    },
-    EDIT_PRODUCT(state, product){
-      state.products[product.id] = product
+      if (state.products[newProd.id]) {
+        state.products[newProd.id] = newProd;
+      } else {
+        newProd.id = Math.round(Math.random() * 1000);
+        state.products[newProd.id] = newProd;
+      }
     }
   },
   actions: {
@@ -64,12 +65,7 @@ export default {
     async requestNewProduct({ commit }, product) {
       //Запрос на добавление/изменение
       commit("ADD_NEW_PRODUCT", product);
-      console.log(product)
-    },
-    async requestToChangeProduct({ commit}, product){
-      //request to server
-
-      commit('EDIT_PRODUCT', product)
+      console.log(product);
     }
   }
 
