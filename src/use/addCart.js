@@ -5,7 +5,6 @@ export function useAddCart(props) {
   const store = useStore();
   const cart = computed(() => store.getters["cart/products"]);
   const checkCart = computed(() => cart.value.find(itm => itm.id === props.data.id))
-  console.log(checkCart.value)
   const quantityInCart = computed(() => checkCart.value ? checkCart.value.quantity : 0);
   const quantity = ref(quantityInCart.value);
   function incQuantity() {

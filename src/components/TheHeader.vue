@@ -9,14 +9,16 @@
           /> -->
     </template>
     <template #end>
-      <Button label="Войти" class="p-button-secondary p-button-text" icon="pi pi-sign-in" @click="$router.push('/auth')"/>
+      <Button :label="$store.getters['auth/userName']" class="p-button-secondary p-button-text" v-if="auth"/>
+      <Button label="Выход" class="p-button-secondary p-button-text" icon="pi pi-sign-out" @click="logOut" v-if="auth"/>
+      <Button label="Войти" class="p-button-secondary p-button-text" icon="pi pi-sign-in" @click="$router.push('/auth')" v-else/>
       <router-link to="/cart"
         ><i
           class="pi pi-shopping-cart p-mr-4 p-text-secondary"
           style="font-size: 1.9rem"
           v-badge="`${$store.getters['cart/quantityProductsInCart']}`"
           to="/cart"
-          v-if="$route.meta.layout === 'main'"
+          v-if="!auth"
         ></i
       ></router-link>
     </template>
@@ -34,30 +36,39 @@ export default {
       items: [
         {
           label: "Магазин",
-          to: "/",
+          to: "/"
         },
         {
           label: "Менеджер товаров",
           icon: "pi pi-sliders-h",
           to: "/admin/product",
-          visible: () => this.$route.meta.layout === "admin"
+          visible: () => this.auth
         },
         {
           label: "Редактор категории",
           icon: "pi pi-tags",
           to: "/admin/categories",
-          visible: () => this.$route.meta.layout === "admin"
+          visible: () => this.auth
         }
       ]
     };
   },
   computed: {
+    auth(){
+      return this.$store.getters['auth/userRole'] === 'admin'
+    },
     title() {
-      return this.$route.meta.layout !== "admin"
+      return !this.auth
         ? "OnlineShop |"
         : "Панель управления |";
-    }
+    },
   },
+  methods: {
+      logOut(){
+        this.$store.dispatch('auth/logOut')
+        this.$router.push('/')
+      }
+    },
   directives: {
     badge: BadgeDirective
   },

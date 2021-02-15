@@ -6,7 +6,7 @@
       <InputText
         id="login"
         type="email"
-        v-model="login"
+        v-model="email"
         aria-describedby="login-help"
         :class="{ 'p-invalid': lError }"
         @blur="lBlur"

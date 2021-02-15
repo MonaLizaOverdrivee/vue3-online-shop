@@ -2,7 +2,7 @@
   <AppPage>
     <div class="p-grid">
       <div class="p-col-8 p-d-flex p-flex-column">
-        <div class="p-col">
+        <div class="p-col" style="flex-grow: 0">
           <h2 class="p-m-0">Товары</h2>
           <h3 class="p-text-center" v-if="!products.length">
             В корзину ещё ничего не добавлено

@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from '../store'
 
 const routes = [
   {
@@ -74,5 +75,19 @@ const router = createRouter({
   linkActiveClass: "active",
   linkExactActiveClass: "active"
 });
+
+router.beforeResolve((to, from, next) => {
+  const validRole = store.getters['auth/checkValidRole']
+  const userRole = store.getters['auth/userRole']
+  const acsess = validRole && (userRole === 'admin')
+  console.log(validRole, userRole, acsess)
+  if(acsess && to.meta.layout === 'admin'){
+    next()
+  }else if(to.meta.layout === 'main' || to.meta.layout === 'auth'){
+    next()
+  }else {
+    next('/auth')
+  }
+})
 
 export default router;

@@ -11,11 +11,13 @@ import AdminLayout from "./lauout/AdminLayout";
 import { useStore } from 'vuex';
 export default {
   setup() {
+    const store = useStore()
     const route = useRoute();
     const layout = computed(() => route.meta.layout);
-    const store = useStore()
-    onMounted(() => { store.dispatch('cart/getProductsForCart'); console.log(store.dispatch('cart/getProductsForCart'))})
-    
+    onMounted(() =>{
+      store.dispatch('cart/getProductsForCart')
+      // store.dispatch('auth/autoLogin')
+      })
     return { layout };
   },
   components: { AuthLayout, MainLayout, AdminLayout }

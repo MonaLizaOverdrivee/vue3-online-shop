@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { useField, useForm, useFormValues } from "vee-validate";
+import { useField, useForm } from "vee-validate";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useStore } from "vuex";
@@ -9,9 +9,7 @@ export function useFormLogin() {
   const router = useRouter();
   const store = useStore();
   const { handleSubmit } = useForm();
-  const values = useFormValues();
-  console.log(values.value);
-  const { value: login, errorMessage: lError, handleBlur: lBlur } = useField(
+  const { value: email, errorMessage: lError, handleBlur: lBlur } = useField(
     "email",
     yup
       .string()
@@ -29,7 +27,11 @@ export function useFormLogin() {
   const onSubmit = handleSubmit(async (data, { resetForm }) => {
     try {
       await store.dispatch("auth/login", data);
-      router.push("/");
+      if(store.getters['auth/userRole'] === 'admin') {
+        router.push("/admin")
+      }else {
+        router.push('/')
+      }
     } catch (e) {
       console.log(e);
     }
@@ -48,7 +50,7 @@ export function useFormLogin() {
     resetForm();
   });
   return {
-    login,
+    email,
     pass,
     lError,
     pError,

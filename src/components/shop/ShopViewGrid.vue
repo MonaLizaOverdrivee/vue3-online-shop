@@ -42,19 +42,7 @@ export default {
 </script>
 
 <style scoped>
-.count-quantity {
-  padding: 0.2rem;
-  border-radius: 5px;
-}
-.count-quantity-danger {
-  background: rgb(255, 0, 0, 0.3);
-}
-.count-quantity-warning {
-  background: rgb(255, 255, 0, 0.3);
-}
-.count-quantity-success {
-  background: rgb(0, 128, 0, 0.3);
-}
+
 .p-dropdown {
   width: 14rem;
   font-weight: 400;

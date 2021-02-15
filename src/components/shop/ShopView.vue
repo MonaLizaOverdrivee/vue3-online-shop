@@ -5,12 +5,12 @@
         <Button
           icon="pi pi-th-large"
           :class="['grid', { 'p-button-outlined': layout === 'List' }]"
-          @click="layout = 'Grid'"
+          @click="toogleView"
         />
         <Button
           icon="pi pi-bars"
           :class="['list', { 'p-button-outlined': layout === 'Grid' }]"
-          @click="layout = 'List'"
+          @click="toogleView"
         />
       </template>
     </Toolbar>
@@ -30,14 +30,18 @@ import Button from "primevue/button";
 import Toolbar from "primevue/toolbar";
 import ShopViewGrid from "../shop/ShopViewGrid";
 import ShopViewList from "../shop/ShopViewList";
-import { ref } from "vue";
+import {  ref } from "vue";
 
 export default {
   props: ["products"],
   setup() {
     const layout = ref("Grid");
+    function toogleView() {
+      layout.value = layout.value === 'Grid' ? 'List' : 'Grid'
+    }
     return {
-      layout
+      layout,
+      toogleView
     };
   },
   components: { ShopViewGrid, ShopViewList, Toolbar, Button }

@@ -1,4 +1,4 @@
-import requestToDatabase from "../../axios/request";
+import { requestToDatabase } from "../../axios/request";
 
 export default {
   namespaced: true,
@@ -46,7 +46,6 @@ export default {
   actions: {
     async getAllProducts({ commit }) {
       const { data } = await requestToDatabase.get("/products.json");
-      console.log(data)
       for(let key in data){
       data[key] = {id: key, ...data[key]}
       }
