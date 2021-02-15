@@ -1,5 +1,5 @@
 <template>
-  <Menubar :model="items">
+  <Menubar :model="items" style="z-index: 999">
     <template #start>
       <h2 class="p-mt-0 p-mb-1" v-text="title"></h2>
       <!-- <Button
@@ -9,6 +9,7 @@
           /> -->
     </template>
     <template #end>
+      <Button label="Войти" class="p-button-secondary p-button-text" icon="pi pi-sign-in" @click="$router.push('/auth')"/>
       <router-link to="/cart"
         ><i
           class="pi pi-shopping-cart p-mr-4 p-text-secondary"
@@ -24,6 +25,7 @@
 
 <script>
 import Menubar from "primevue/menubar";
+import Button from "primevue/button";
 import BadgeDirective from "primevue/badgedirective";
 // import Button from "primevue/button";
 export default {
@@ -32,9 +34,7 @@ export default {
       items: [
         {
           label: "Магазин",
-          // icon: "",
           to: "/",
-          visible: () => this.$route.meta.layout === "main"
         },
         {
           label: "Менеджер товаров",
@@ -61,18 +61,17 @@ export default {
   directives: {
     badge: BadgeDirective
   },
-  components: { Menubar }
+  components: { Menubar, Button }
 };
 </script>
 
 <style scoped>
 .p-menubar {
+  position: sticky;
+  top: 0;
   border: 0 !important;
   margin: 0 -8px;
   padding: 0.7rem !important;
   box-shadow: 0px 3px 4px -1px;
-}
-.p-button {
-  font-weight: 600;
 }
 </style>

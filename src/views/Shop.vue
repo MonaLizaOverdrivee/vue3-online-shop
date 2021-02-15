@@ -56,6 +56,6 @@ export default {
 <style scoped>
 .container-filter {
   position: sticky;
-  top: 1rem;
+  top: 5rem;
 }
 </style>

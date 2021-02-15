@@ -6,18 +6,18 @@ export default {
     return {
       products: {},
       selectedProduct: {},
-      categories: []
+      categories: {}
     };
   },
   getters: {
     products: ({ products }) => Object.keys(products).map(itm => products[itm]),
-    categories: ({ categories }) => categories,
+    categories: ({ categories }) => Object.keys(categories).map(itm => categories[itm]),
     selectedProduct: ({ selectedProduct }) => selectedProduct
     //
   },
   mutations: {
-    SET_SELECTED_PRODUCT(state, product) {
-      state.selectedProduct = product;
+    SET_SELECTED_PRODUCT(state, id) {
+      state.selectedProduct = state.products[id];
     },
     SET_COUNT(state, payload) {
       state.products[payload.id].count = payload.count;
@@ -31,6 +31,9 @@ export default {
     SET_CATEGORIES(state, category) {
       state.categories = category;
     },
+    REMOVE_CATEGORIES(state, category) {
+      category.forEach(itm => delete state.categories[itm.id])
+    },
     ADD_NEW_PRODUCT(state, newProd) {
       if (state.products[newProd.id]) {
         state.products[newProd.id] = newProd;
@@ -42,23 +45,18 @@ export default {
   },
   actions: {
     async getAllProducts({ commit }) {
-      const { data } = await requestToDatabase.get("/products");
-      const dataObject = data.reduce((acc, itm) => {
-        acc[itm.id] = itm;
-        return acc;
-      }, {});
-      commit("SET_PRODUCTS", dataObject);
-    },
-    async getSelectedProduct({ commit }, id) {
-      try {
-        const { data } = await requestToDatabase.get(`/products?id=${id}`);
-        commit("SET_SELECTED_PRODUCT", data[0]);
-      } catch (e) {
-        console.log(e);
+      const { data } = await requestToDatabase.get("/products.json");
+      console.log(data)
+      for(let key in data){
+      data[key] = {id: key, ...data[key]}
       }
+      commit("SET_PRODUCTS", data);
     },
     async getCategories({ commit }) {
-      const { data } = await requestToDatabase.get("/categories");
+      const { data } = await requestToDatabase.get("/categories.json");
+      for(let key in data){
+      data[key] = {id: key, ...data[key]}
+      }
 
       commit("SET_CATEGORIES", data);
     },

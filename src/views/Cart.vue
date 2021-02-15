@@ -9,14 +9,14 @@
           </h3>
         </div>
 
-        <ProductList
+        <CartProductList
           v-for="product in products"
           :key="product.id"
           :data="product"
         />
       </div>
 
-      <div class="p-col p-d-flex p-flex-column p-as-start">
+      <div class="p-col p-d-flex p-flex-column p-as-start container-total">
         <div class="p-col">
           <h2 class="p-m-0">Итого</h2>
         </div>
@@ -37,20 +37,24 @@
             <div>{{ totalProductsPrice }} РУБ</div>
           </div>
         </div>
+        <div class="p-col p-fluid">
+          <Button label="Оплатить" disabled=''/>
+          <p class="p-text-center">Для оплаты <a href="" class="link-component">войдите</a> или <a href="" class="link-component"> зарегистрируйтесь</a></p>
+        </div>
+        </div>
       </div>
-    </div>
   </AppPage>
 </template>
 
 <script>
+import Button from "primevue/button";
 import AppPage from "../components/ui/AppPage";
-import ProductList from "../components/cart/ProductList";
+import CartProductList from "../components/cart/CartProductList";
 import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
+import { computed } from "vue";
 
 export default {
   setup() {
-    onMounted(() => store.dispatch("cart/getProductsForCart"));
     const store = useStore();
     const products = computed(() => store.getters["cart/products"]);
     const totalProductsPrice = computed(() =>
@@ -64,6 +68,16 @@ export default {
       totalProductsPrice
     };
   },
-  components: { AppPage, ProductList }
+  components: { AppPage, CartProductList, Button }
 };
 </script>
+
+<style scoped>
+.container-total {
+   position: sticky;
+  top: 4rem;
+}
+.link-component {
+  color: var(--primary-color)
+}
+</style>

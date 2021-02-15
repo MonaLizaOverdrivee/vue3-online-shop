@@ -17,62 +17,31 @@
       </div>
       <div class="product-grid-item-bottom">
         <span class="product-price">{{ price }} РУБ</span>
-        <Button
-          @click="
-            addToCart();
-            incQuantity();
-          "
-          icon="pi pi-shopping-cart"
-          :disabled="count === 0"
-          v-if="!quantityInCart || count === 0"
-        ></Button>
-        <!-- Использовал v-show вместо v-else из-за ошибки в самом компаненте фрайморка который пытается ссылаться на удалённый элемент -->
-        <InputNumber
-          v-show="quantityInCart && count !== 0"
-          :id="id + 'count'"
-          v-model="quantity"
-          showButtons
-          buttonLayout="horizontal"
-          incrementButtonIcon="pi pi-plus"
-          decrementButtonIcon="pi pi-minus"
-          mode="decimal"
-          :min="0"
-          :max="count"
-          @input="incQuantity"
-        />
+       <AppAddButton :data="data" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Button from "primevue/button";
-import InputNumber from "primevue/inputnumber";
-import { useAddCart } from "../../use/addCart";
+import AppAddButton from '../ui/AppAddButton'
 import { useCountStatusStyle } from "../../use/countViewStyle";
-import { computed } from "vue";
+import { computed, reactive, toRefs } from "vue";
 export default {
   props: ["data"],
   setup(props) {
     const count = computed(() => props.data.count);
+    const product = reactive(props.data)
     return {
       ...useCountStatusStyle(count),
-      ...useAddCart(props)
+      ...toRefs(product)
     };
   },
-  components: { Button, InputNumber }
+  components: { AppAddButton }
 };
 </script>
 
 <style scoped>
-.p-inputnumber >>> .p-inputnumber-input:enabled:focus {
-  box-shadow: none !important;
-}
-.p-inputnumber >>> .p-inputnumber-input {
-  border: none;
-  text-align: center;
-  width: 41px;
-}
 .count-quantity {
   padding: 0.2rem;
   border-radius: 5px;
@@ -122,9 +91,5 @@ export default {
 }
 .product-grid-item .product-grid-item-content {
   text-align: center;
-}
-.product-grid-item .product-price {
-  font-size: 1.2rem;
-  font-weight: 400;
 }
 </style>

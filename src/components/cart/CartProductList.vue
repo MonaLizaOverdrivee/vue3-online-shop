@@ -11,23 +11,17 @@
       />
     </div>
     <div
-      class="p-flex-column p-d-flex"
-      :class="{
-        'p-jc-between': $route.path === '/cart',
-        'p-jc-end': $route.path === '/'
-      }"
+      class="p-flex-column p-d-flex p-jc-between"
     >
       <Button
         icon="pi pi-times"
         class="p-button-rounded p-button-danger p-button-text p-as-end"
         @click="$store.commit('cart/REMOVE_PRODUCTS', id)"
         style="width: auto"
-        v-if="$route.path === '/cart'"
       />
       <div>
         <p class="p-text-right product-price">{{ price }} РУБ</p>
         <InputNumber
-          v-if="$route.path === '/cart'"
           :id="id + 'count'"
           v-model="quantity"
           showButtons
@@ -37,14 +31,8 @@
           mode="decimal"
           :min="1"
           :max="count"
-          @input="
-            $store.commit('cart/CHANGE_QUANTITY', {
-              quantity: $event.value,
-              id
-            })
-          "
+          @input="incQuant"
         />
-        <Button icon="pi pi-shopping-cart" label="В корзину" v-else></Button>
       </div>
     </div>
   </div>
@@ -54,11 +42,22 @@
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import { reactive, toRefs } from "vue";
+import { useStore } from 'vuex';
 export default {
   props: ["data"],
   setup(props) {
     const product = reactive(props.data);
+    const store = useStore()
+    function incQuant(e){
+      const quantity = e.value
+      // console.log(props.data)
+       store.commit('cart/SET_CART', {
+         ...props.data,
+              quantity: quantity
+            })
+    }
     return {
+      incQuant,
       ...toRefs(product)
       // description: props.data.description,
     };

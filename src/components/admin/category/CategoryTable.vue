@@ -5,14 +5,14 @@
         label="Создать"
         icon="pi pi-plus"
         class="p-button-success p-mr-2"
-        @click="showModal(MODEL)"
+        @click="showModal"
       />
       <Button
         label="Удалить"
         icon="pi pi-trash"
         class="p-button-danger"
-        @click="confirmDeleteSelected(selectedProducts)"
-        :disabled="!selectedProducts || !selectedProducts.length"
+        @click="confirmDeleteSelected(selectedCategories)"
+        :disabled="!selectedCategories || !selectedCategories.length"
       />
     </template>
 
@@ -33,7 +33,7 @@
       />
     </template>
   </Toolbar>
-  <DataTable :value="data" v-model:selection="selectedProducts">
+  <DataTable :value="data" v-model:selection="selectedCategories">
     <Column
       selectionMode="multiple"
       headerStyle="width: 3rem"
@@ -41,20 +41,7 @@
     ></Column>
     <Column field="id" header="ID" :sortable="true" />
     <Column field="title" header="Наименование" :sortable="true" />
-    <Column header="Картинка">
-      <template #body="slotProps">
-        <img
-          :src="slotProps.data.img"
-          :alt="slotProps.data.img"
-          class="product-image p-shadow-2"
-        />
-      </template>
-    </Column>
-    <Column header="Цена" :sortable="true">
-      <template #body="slotProps"> {{ slotProps.data.price }} РУБ </template>
-    </Column>
-    <Column field="category" header="Категория" :sortable="true" />
-    <Column field="count" header="Количество" :sortable="true" />
+    <Column field="type" header="Системное имя" :sortable="true" />
     <Column :exportable="false">
       <template #body="slotProps">
         <Button
@@ -70,14 +57,13 @@
       </template>
     </Column>
   </DataTable>
-  <ProductTableleItemModal
+  <CategoryTableItemModal
     :visibilityModal="visibilityModal"
     @checkChange="hideModal"
     @hide="visibilityModal = false"
-    :product="product"
-    :categoryData="category"
+    :category="category"
   />
-  <pre>{{ product }}</pre>
+  <pre>{{ category }}</pre>
   <ConfirmDialog></ConfirmDialog>
 </template>
 
@@ -88,34 +74,31 @@ import Button from "primevue/button";
 
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import ProductTableleItemModal from "./ProductTableleItemModal";
+import CategoryTableItemModal from "./CategoryTableItemModal";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
-import { computed, ref, reactive } from "vue";
+import {  ref, reactive } from "vue";
 import { useStore } from "vuex";
-import { useDelete } from "../../../use/admin/product/deleteProduct";
+import { useDelete } from "../../../use/admin/category/deleteCategories";
 export default {
   props: ["data"],
-  setup() {
+  setup(props) {
+    console.log(props.data);
     const store = useStore();
     store.dispatch("shop/getCategories");
-    const category = computed(() => store.getters["shop/categories"]);
     const confirm = useConfirm();
-    const selectedProducts = ref(null);
+    const selectedCategories = ref(null);
     const MODEL = {
-      img: undefined,
-      discription: undefined,
-      price: undefined,
-      category: undefined,
+      type: undefined,
       title: undefined,
-      count: undefined
     };
-    const product = reactive({ product: { ...MODEL } });
+    const category = reactive({ category: { ...MODEL } });
     const visibilityModal = ref(false);
 
     function showModal(val) {
-      console.log(val)
-      product.product = { ...val };
+      console.log(val.id);
+      category.category = { ...val };
+      console.log(category.category);
       visibilityModal.value = true;
     }
     function hideModal(bool) {
@@ -127,24 +110,24 @@ export default {
           header: "Подтвердите действие",
           icon: "pi pi-exclamation-triangle",
           accept: () => {
-            selectedProducts.value = null;
+            selectedCategories.value = null;
             visibilityModal.value = false;
+             category.category = { ...MODEL }
           }
         });
       } else {
-        selectedProducts.value = null;
+        selectedCategories.value = null;
         visibilityModal.value = false;
+        category.category = { ...MODEL }
       }
     }
     return {
-      MODEL,
       visibilityModal,
       showModal,
-      product,
       category,
       hideModal,
-      selectedProducts,
-      ...useDelete(selectedProducts)
+      selectedCategories,
+      ...useDelete(selectedCategories)
     };
   },
   components: {
@@ -153,7 +136,7 @@ export default {
     FileUpload,
     DataTable,
     Column,
-    ProductTableleItemModal,
+    CategoryTableItemModal,
     ConfirmDialog
   }
 };

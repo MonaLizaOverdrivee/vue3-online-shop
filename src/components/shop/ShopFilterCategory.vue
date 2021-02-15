@@ -1,5 +1,5 @@
 <template>
-  <Menu :model="menuItem" class="asd" />
+  <Menu :model="menuItem" />
   <!-- Menu принемает массив объектов где объект - это настройка пункта меню, command - действие при клике -->
 </template>
 
@@ -7,15 +7,18 @@
 import Menu from "primevue/menu";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { useRoute } from 'vue-router';
 export default {
   emits: ["update:modelValue"],
   props: ["modelValue"],
   setup(_, { emit }) {
     const store = useStore();
+    const route = useRoute()
+    // const activeClass = computed(() => 'activer')
     const menuItem = computed(() => {
       const menu = store.getters["shop/categories"].map(itm => ({
         label: itm.title,
-        class: "active",
+        class: computed(() => itm.type === route.query.category ? 'active' : '').value,
         command: () => {
           emit("update:modelValue", itm.type);
         }
@@ -38,7 +41,8 @@ export default {
 .p-menu {
   width: auto;
 }
-.p-menu >>> .p-menuitem-link.active {
-  background: red !important;
+.p-menu >>> .p-menuitem.active {
+  background: #e9ecef !important;
+  border-left: 4px solid var(--primary-color);
 }
 </style>

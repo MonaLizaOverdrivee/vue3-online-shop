@@ -103,7 +103,6 @@ export default {
   props: ["product", "categoryData", "visibilityModal"],
   setup(props, { emit }) {
     const visibility = computed(() => props.visibilityModal);
-    console.log("transfer to modal", props.product);
     return {
       visibility,
       ...useModal(props.product, emit)

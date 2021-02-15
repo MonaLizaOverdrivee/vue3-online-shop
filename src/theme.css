@@ -2,6 +2,12 @@
     color: #ff0000;
 }
 
-.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus {
+.p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link:focus,
+.p-menu .p-menuitem-link:focus
+{
     box-shadow: none !important;
 }
+.product-price {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }

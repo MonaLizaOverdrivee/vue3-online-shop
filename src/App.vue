@@ -4,14 +4,18 @@
 
 <script>
 import { useRoute } from "vue-router";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import AuthLayout from "./lauout/AuthLayout";
 import MainLayout from "./lauout/MainLayout";
 import AdminLayout from "./lauout/AdminLayout";
+import { useStore } from 'vuex';
 export default {
   setup() {
     const route = useRoute();
     const layout = computed(() => route.meta.layout);
+    const store = useStore()
+    onMounted(() => { store.dispatch('cart/getProductsForCart'); console.log(store.dispatch('cart/getProductsForCart'))})
+    
     return { layout };
   },
   components: { AuthLayout, MainLayout, AdminLayout }

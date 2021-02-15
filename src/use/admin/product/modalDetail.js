@@ -52,6 +52,7 @@ export function useModal(product, emit) {
 
 	function hide() {
 		emit("checkChange", checkChangeData.value);
+		console.log(newProduct.value)
 	}
 	const save = handleSubmit(async (fieldData) => {
 		await store.dispatch("shop/requestNewProduct", {
