@@ -1,24 +1,9 @@
-# online-shop
+# Deploy
 
-## Project setup
-```
-npm install
-```
+https://vue3-online-shop-demo.web.app/
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### credential admin
 
-### Compiles and minifies for production
-```
-npm run build
-```
+admin@onlineshop.ru
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+123456
