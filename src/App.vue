@@ -1,8 +1,10 @@
 <template>
   <component :is="layout + '-layout'" />
+  <ScrollTop class="custom-scrolltop"/>
 </template>
 
 <script>
+import ScrollTop from 'primevue/scrolltop';
 import { useRoute } from "vue-router";
 import { computed, onMounted } from "vue";
 import AuthLayout from "./lauout/AuthLayout";
@@ -20,10 +22,13 @@ export default {
       })
     return { layout };
   },
-  components: { AuthLayout, MainLayout, AdminLayout }
+  components: { AuthLayout, MainLayout, AdminLayout, ScrollTop }
 };
 </script>
 <style>
+.custom-scrolltop {
+  background-color: var(--primary-color) !important;
+}
 .p-button:focus {
   box-shadow: none !important;
 }

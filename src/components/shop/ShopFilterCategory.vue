@@ -25,7 +25,7 @@ export default {
       }));
       menu.unshift({
         label: "Все",
-        command: () => emit("update:modelValue", null)
+        command: () => emit("update:modelValue", undefined)
       });
       return menu;
     });

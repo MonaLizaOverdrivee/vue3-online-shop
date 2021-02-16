@@ -1,6 +1,18 @@
 <template>
-  <h1 class="p-text-center">Вход в систему</h1>
+   <h1 class="p-text-center">Регистрация</h1>
   <form class="p-fluid p-input-filled" @submit.prevent="onSubmit">
+     <div class="p-field">
+      <label for="name">Имя</label>
+      <InputText
+        id="name"
+        type="text"
+        v-model="name"
+        aria-describedby="name-help"
+        :class="{ 'p-invalid': nError }"
+        @blur="nBlur"
+      />
+      <small id="name-help" class="p-error">{{ nError }}</small>
+    </div>
     <div class="p-field">
       <label for="login">Email</label>
       <InputText
@@ -24,26 +36,24 @@
       />
       <small id="password-help" class="p-error">{{ pError }}</small>
     </div>
-    <Button label="Войти" type="submit"/>
-    <Button label="Зрегистрироваться" class="p-button-text" @click="$router.push('/singup')" />
-    <div class="p-text-center">
-      <small class="p-error" v-if="invalidSubmitMessage">{{
-        invalidSubmitMessage
-      }}</small>
-    </div>
+    <Button label="Войти" type="submit" />
   </form>
 </template>
 
 <script>
-import { useFormLogin } from "../use/login";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-
+import { useSignUp } from '../use/singUp'
 export default {
-  setup() {
-    document.title = "Вход";
-    return { ...useFormLogin() };
-  },
-  components: { InputText, Button }
-};
+setup() {
+  return {
+    ...useSignUp()
+  }
+},
+components: { InputText, Button }
+}
 </script>
+
+<style>
+
+</style>

@@ -35,12 +35,7 @@ export default {
       category.forEach(itm => delete state.categories[itm.id])
     },
     ADD_NEW_PRODUCT(state, newProd) {
-      if (state.products[newProd.id]) {
-        state.products[newProd.id] = newProd;
-      } else {
-        newProd.id = Math.round(Math.random() * 1000);
-        state.products[newProd.id] = newProd;
-      }
+      state.products[newProd.id] = newProd;
     }
   },
   actions: {
@@ -56,14 +51,13 @@ export default {
       for(let key in data){
       data[key] = {id: key, ...data[key]}
       }
-
       commit("SET_CATEGORIES", data);
     },
     async requestNewProduct({ commit }, product) {
-      //Запрос на добавление/изменение
-      commit("ADD_NEW_PRODUCT", product);
+      const { data } = await requestToDatabase.post('/products.json', product)
+      commit("ADD_NEW_PRODUCT", {...product, id: data.name});
       console.log(product);
-    }
+    },
   }
 
   // async getFilterProducts({ commit }, category){

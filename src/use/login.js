@@ -26,14 +26,13 @@ export function useFormLogin() {
   );
   const onSubmit = handleSubmit(async (data, { resetForm }) => {
     try {
-      await store.dispatch("auth/login", data);
-      if(store.getters['auth/userRole'] === 'admin') {
-        router.push("/admin")
-      }else {
-        router.push('/')
-      }
+      await store.dispatch("auth/login", data).then(() => {
+        if(store.getters['auth/userRole'] === 'admin') router.push("/admin")
+        if(router.currentRoute.value.path !=='/auth') store.commit('TOGGLE_VISIBLE')
+      });
     } catch (e) {
       console.log(e);
+      invalidSubmitMessage.value = 'Пароль или логин введены неверно'
     }
     // const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.VUE_APP_FB_API_KEY}`, {
     //   method: 'POST',

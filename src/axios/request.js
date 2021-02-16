@@ -5,10 +5,8 @@ const requestToDatabase = axios.create({
 });
 
 const authInApp = axios.create({
-  baseURL: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.VUE_APP_KEY}`
+  baseURL:' https://identitytoolkit.googleapis.com/v1/'
 })
 
-const getUser = axios.create({
-  baseURL: 'https://vue3-online-shop-demo-default-rtdb.europe-west1.firebasedatabase.app/users'
-})
-export { requestToDatabase, authInApp, getUser }
+
+export { requestToDatabase, authInApp }

@@ -41,6 +41,22 @@ const routes = [
     }
   },
   {
+    path: "/singup",
+    name: "SingUp",
+    component: () => import("../views/SingUp.vue"),
+    meta: {
+      layout: "auth"
+    }
+  },
+  {
+    path: "/singnupdone",
+    name: "Singnupdone",
+    component: () => import("../views/SingnUpDone.vue"),
+    meta: {
+      layout: "auth"
+    }
+  },
+  {
     path: "/admin",
     name: "Dashboard",
     redirect: "/admin/product",
@@ -66,6 +82,11 @@ const routes = [
         component: () => import("../views/admin/AdminCategories")
       }
     ]
+  },
+  {
+    path: '/:notFound(.*)',
+    name: 'NotFound',
+    component: () => import("../views/PageNotFound")
   }
 ];
 
@@ -76,7 +97,7 @@ const router = createRouter({
   linkExactActiveClass: "active"
 });
 
-router.beforeResolve((to, from, next) => {
+router.beforeEach((to, from, next) => {
   const validRole = store.getters['auth/checkValidRole']
   const userRole = store.getters['auth/userRole']
   const acsess = validRole && (userRole === 'admin')

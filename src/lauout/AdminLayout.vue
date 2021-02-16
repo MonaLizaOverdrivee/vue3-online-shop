@@ -1,5 +1,5 @@
 <template>
-  <TheHeader />
+  <TheHeaderAdmin />
   <div class="p-grid p-jc-center">
     <div class="p-col  main-layout">
       <router-view />
@@ -8,9 +8,9 @@
 </template>
 
 <script>
-import TheHeader from "../components/TheHeader";
+import TheHeaderAdmin from "../components/TheHeaderAdmin";
 export default {
-  components: { TheHeader }
+  components: { TheHeaderAdmin }
 };
 </script>
 

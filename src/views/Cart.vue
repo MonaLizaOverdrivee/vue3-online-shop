@@ -38,8 +38,8 @@
           </div>
         </div>
         <div class="p-col p-fluid">
-          <Button label="Оплатить" disabled=''/>
-          <p class="p-text-center">Для оплаты <a href="" class="link-component">войдите</a> или <a href="" class="link-component"> зарегистрируйтесь</a></p>
+          <Button label="Оплатить" :disabled="!auth"/>
+          <p class="p-text-center" v-if="!auth">Для оплаты <a href="" class="link-component">войдите</a> или <a href="" class="link-component" > зарегистрируйтесь</a></p>
         </div>
         </div>
       </div>
@@ -57,6 +57,7 @@ export default {
   setup() {
     const store = useStore();
     const products = computed(() => store.getters["cart/products"]);
+    const auth = computed(() => store.getters['auth/isAuthenticated'])
     const totalProductsPrice = computed(() =>
       products.value.reduce((acc, itm) => {
         acc += itm.price * itm.quantity;
@@ -64,6 +65,7 @@ export default {
       }, 0)
     );
     return {
+      auth,
       products,
       totalProductsPrice
     };
