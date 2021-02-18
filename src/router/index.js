@@ -3,6 +3,14 @@ import store from "../store";
 
 const routes = [
   {
+    path: '/home',
+    component: () => import('../views/Home'),
+    meta: {
+      layout: 'main',
+      title: 'Главная'
+    }
+  },
+  {
     path: "/",
     name: "Shop",
     component: () => import("../views/Shop.vue"),
@@ -101,9 +109,10 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const validRole = store.getters["auth/checkValidRole"];
+  // const validRole = store.getters["auth/checkValidRole"];
   const userRole = store.getters["auth/userRole"];
-  const acsess = validRole && userRole === "admin";
+  const acsess = userRole === "admin";
+  console.log(userRole)
 
   if (acsess && to.meta.layout === "admin") {
     next();

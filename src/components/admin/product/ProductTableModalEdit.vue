@@ -95,7 +95,7 @@ import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
-import { useModal } from "../../../use/admin/product/modalDetail";
+import { useModal } from "../../../use/admin/product/editProduct";
 import { computed } from "vue";
 
 export default {

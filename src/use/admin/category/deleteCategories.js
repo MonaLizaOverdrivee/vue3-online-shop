@@ -13,7 +13,7 @@ export function useDelete(category) {
       header: "Подтвердите действие",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
-        store.commit("shop/REMOVE_CATEGORIES", value);
+        store.dispatch("shop/requestRemoveCategory", value);
         category.value = null;
       }
     });

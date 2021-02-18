@@ -10,7 +10,7 @@ export default {
       refreshToken: localStorage.getItem("REFRESH_TOKEN"),
       user: {
         id: "",
-        role: "",
+        role: sessionStorage.getItem("userRole"),
         name: sessionStorage.getItem("userName")
       }
     };

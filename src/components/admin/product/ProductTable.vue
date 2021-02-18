@@ -5,7 +5,7 @@
         label="Создать"
         icon="pi pi-plus"
         class="p-button-success p-mr-2"
-        @click="showModal(MODEL)"
+        @click="showModalNew"
       />
       <Button
         label="Удалить"
@@ -29,11 +29,11 @@
         label="Export"
         icon="pi pi-upload"
         class="p-button-help"
-        @click="exportCSV($event)"
+        @click="exportCSV"
       />
     </template>
   </Toolbar>
-  <DataTable :value="data" v-model:selection="selectedProducts">
+  <DataTable :value="data" v-model:selection="selectedProducts" ref="dt">
     <Column
       selectionMode="multiple"
       headerStyle="width: 3rem"
@@ -70,11 +70,16 @@
       </template>
     </Column>
   </DataTable>
-  <ProductTableleItemModal
+  <ProductTableModalEdit
     :visibilityModal="visibilityModal"
     @checkChange="hideModal"
     @hide="visibilityModal = false"
     :product="product"
+    :categoryData="category"
+  />
+  <ProductTableModalNew
+    :visibilityModal="visibilityModalNew"
+    @hide="visibilityModalNew = false"
     :categoryData="category"
   />
   <pre>{{ product }}</pre>
@@ -88,7 +93,8 @@ import Button from "primevue/button";
 
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import ProductTableleItemModal from "./ProductTableleItemModal";
+import ProductTableModalEdit from "./ProductTableModalEdit";
+import ProductTableModalNew from "./ProductTableModalNew";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { computed, ref, reactive } from "vue";
@@ -102,21 +108,17 @@ export default {
     const category = computed(() => store.getters["shop/categories"]);
     const confirm = useConfirm();
     const selectedProducts = ref(null);
-    const MODEL = {
-      img: undefined,
-      discription: undefined,
-      price: undefined,
-      category: undefined,
-      title: undefined,
-      count: undefined
-    };
-    const product = reactive({ product: { ...MODEL } });
+    const product = reactive({ product: {} });
     const visibilityModal = ref(false);
+    const visibilityModalNew = ref(false);
+    const dt = ref(null)
 
     function showModal(val) {
-      console.log(val);
       product.product = { ...val };
       visibilityModal.value = true;
+    }
+    function showModalNew() {
+      visibilityModalNew.value = true;
     }
     function hideModal(bool) {
       if (!bool) {
@@ -136,15 +138,22 @@ export default {
         visibilityModal.value = false;
       }
     }
+       function exportCSV() {
+         console.log(dt.value.exportCSV)
+           dt.value.exportCSV();
+        }
     return {
-      MODEL,
       visibilityModal,
       showModal,
       product,
       category,
       hideModal,
       selectedProducts,
-      ...useDelete(selectedProducts)
+      ...useDelete(selectedProducts),
+      visibilityModalNew,
+      showModalNew,
+      dt,
+      exportCSV
     };
   },
   components: {
@@ -153,8 +162,9 @@ export default {
     FileUpload,
     DataTable,
     Column,
-    ProductTableleItemModal,
-    ConfirmDialog
+    ProductTableModalEdit,
+    ConfirmDialog,
+    ProductTableModalNew
   }
 };
 </script>

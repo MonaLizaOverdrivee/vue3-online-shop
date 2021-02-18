@@ -13,7 +13,7 @@ export function useDelete(product) {
       header: "Подтвердите действие",
       icon: "pi pi-exclamation-triangle",
       accept: () => {
-        store.commit("shop/REMOVE_PRODUCT", value);
+        store.dispatch("shop/removeProducts", value);
         product.value = null;
       }
     });

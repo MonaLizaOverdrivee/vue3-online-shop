@@ -1,3 +1,4 @@
+import { Promise } from "core-js";
 import { requestToDatabase } from "../../axios/request";
 
 export default {
@@ -37,6 +38,9 @@ export default {
     },
     ADD_NEW_PRODUCT(state, newProd) {
       state.products[newProd.id] = newProd;
+    },
+    ADD_NEW_CATEGORIES(state, newCat) {
+      state.categories[newCat.id] = newCat;
     }
   },
   actions: {
@@ -54,16 +58,34 @@ export default {
       }
       commit("SET_CATEGORIES", data);
     },
+
     async requestNewProduct({ commit }, product) {
       const { data } = await requestToDatabase.post("/products.json", product);
       commit("ADD_NEW_PRODUCT", { ...product, id: data.name });
+    },
+    async requestEditProduct({commit}, product){
+      await requestToDatabase.patch(`/products/${product.id}.json`, product)
+      commit("ADD_NEW_PRODUCT", product);
+    },
+    async removeProducts({commit}, products){
+      const request = products.map(itm => requestToDatabase.delete(`/products/${itm.id}.json`))
+      await Promise.all(request)
+      commit('REMOVE_PRODUCT',products)
+    },
+
+    async requestNewCategory({ commit }, category) {
+      const { data } = await requestToDatabase.post("/categories.json", category);
+      commit("ADD_NEW_CATEGORIES", { ...category, id: data.name });
+    },
+    async requestEditCategory({ commit }, category){
+      await requestToDatabase.patch(`/categories/${category.id}.json`, category)
+      commit("ADD_NEW_CATEGORIES", category);
+    },
+    async requestRemoveCategory({commit}, category){
+      const request = category.map(itm => requestToDatabase.delete(`/categories/${itm.id}.json`))
+      await Promise.all(request)
+      commit('REMOVE_CATEGORIES', category)
     }
   }
 
-  // async getFilterProducts({ commit }, category){
-  //   const { data } = await requestToDatabase.get(`/products?category=${category}`);
-  //     commit("SET_PRODUCTS", data);
-  // }
-  //Такой варинт как мне кажется более производительный, потому что нам не нужно загружать всю базу продуктов, я использовал вариант
-  // с фильтром в компоненте в связи с тем что для решения задачи нужно отслеживать кол во продуктов на складе а при фильтрации категории через запрос к бд колво товаров обновляется
 };

@@ -1,7 +1,7 @@
 <template>
    <ProgressBar mode="indeterminate" style="height: .5em" v-if="$store.getters['loader/loaderVisible']"/>
   <TheHeader />
-  <div class="p-grid p-jc-center" v-if="!$store.getters['loader/loaderVisible']">
+  <div class="p-grid p-jc-center p-mt-3" v-if="!$store.getters['loader/loaderVisible']">
     <div class="p-col  main-layout">
       <router-view />
     </div>

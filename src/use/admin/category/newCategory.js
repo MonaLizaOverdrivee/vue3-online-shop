@@ -1,10 +1,15 @@
 import * as yup from "yup";
-import { useField, useForm, useFormValues } from "vee-validate";
-import { computed, ref, watch } from "vue";
+import { useField, useForm, useFormValues, useResetForm } from "vee-validate";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import { useConfirm } from "primevue/useconfirm";
 
-export function useModal(category, emit) {
-  const currentCategories = ref(null);
+export function useModalNew(emit) {
+  const confirm = useConfirm();
+  const currentCategories = ref({
+    type: undefined,
+    title: undefined
+  });
   const store = useStore();
   const schema = yup.object({
     title: yup.string().required("Укажите наименование категории"),
@@ -22,16 +27,10 @@ export function useModal(category, emit) {
     "title"
   );
 
-  watch(category, () => {
-    type.value = category.category.type;
-    title.value = category.category.title;
-    currentCategories.value = {
-      type: category.category.type,
-      title: category.category.title
-    };
-  });
+
 
   const newCategories = useFormValues();
+  const reset = useResetForm()
 
   const checkChangeData = computed(() =>
     Object.keys(currentCategories.value).reduce((acc, itm) => {
@@ -40,13 +39,25 @@ export function useModal(category, emit) {
   );
 
   function hide() {
-    emit("checkChange", checkChangeData.value);
+    if (!checkChangeData.value) {
+      confirm.require({
+        acceptLabel: "Да",
+        rejectLabel: "Нет",
+        message: "Есть несохранённые данные, всё равно закрыть?",
+        header: "Подтвердите действие",
+        icon: "pi pi-exclamation-triangle",
+        accept: () => {
+          reset()
+          emit("hide");
+        }
+      });
+    } else {
+      emit("hide");
+    }
   }
-  const save = handleSubmit(async fieldData => {
-    await store.dispatch("shop/requestEditCategory", {
-      ...fieldData,
-      id: category.category.id
-    });
+  const save = handleSubmit(async (fieldData, { resetForm }) => {
+    await store.dispatch("shop/requestNewCategory", fieldData);
+    resetForm()
     emit("hide");
   });
 

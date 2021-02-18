@@ -5,7 +5,7 @@
         label="Создать"
         icon="pi pi-plus"
         class="p-button-success p-mr-2"
-        @click="showModal"
+        @click="showModalNew"
       />
       <Button
         label="Удалить"
@@ -63,6 +63,10 @@
     @hide="visibilityModal = false"
     :category="category"
   />
+  <CategoryTableModalNew
+    :visibilityModal="visibilityModalNew"
+    @hide="visibilityModalNew = false"
+  />
   <pre>{{ category }}</pre>
   <ConfirmDialog></ConfirmDialog>
 </template>
@@ -75,6 +79,7 @@ import Button from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import CategoryTableItemModal from "./CategoryTableItemModal";
+import CategoryTableModalNew from "./CategoryTableModalNew";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import { ref, reactive } from "vue";
@@ -88,18 +93,16 @@ export default {
     store.dispatch("shop/getCategories");
     const confirm = useConfirm();
     const selectedCategories = ref(null);
-    const MODEL = {
-      type: undefined,
-      title: undefined
-    };
-    const category = reactive({ category: { ...MODEL } });
+    const category = reactive({ category: {} });
     const visibilityModal = ref(false);
+    const visibilityModalNew = ref(false);
 
     function showModal(val) {
-      console.log(val.id);
       category.category = { ...val };
-      console.log(category.category);
       visibilityModal.value = true;
+    }
+    function showModalNew() {
+      visibilityModalNew.value = true;
     }
     function hideModal(bool) {
       if (!bool) {
@@ -112,20 +115,22 @@ export default {
           accept: () => {
             selectedCategories.value = null;
             visibilityModal.value = false;
-            category.category = { ...MODEL };
+            category.category = { };
           }
         });
       } else {
         selectedCategories.value = null;
         visibilityModal.value = false;
-        category.category = { ...MODEL };
+        category.category = {};
       }
     }
     return {
       visibilityModal,
+      visibilityModalNew,
       showModal,
       category,
       hideModal,
+      showModalNew,
       selectedCategories,
       ...useDelete(selectedCategories)
     };
@@ -137,6 +142,7 @@ export default {
     DataTable,
     Column,
     CategoryTableItemModal,
+    CategoryTableModalNew,
     ConfirmDialog
   }
 };
