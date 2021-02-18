@@ -20,4 +20,3 @@ export default {
   components: { AppPage, ProductTable }
 };
 </script>
-

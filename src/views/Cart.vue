@@ -38,11 +38,14 @@
           </div>
         </div>
         <div class="p-col p-fluid">
-          <Button label="Оплатить" :disabled="!auth"/>
-          <p class="p-text-center" v-if="!auth">Для оплаты <a href="" class="link-component">войдите</a> или <a href="" class="link-component" > зарегистрируйтесь</a></p>
-        </div>
+          <Button label="Оплатить" :disabled="!auth" />
+          <p class="p-text-center" v-if="!auth">
+            Для оплаты <a href="" class="link-component" @click.prevent="$store.commit('TOGGLE_VISIBLE')">войдите</a> или
+            <a href="" class="link-component" @click.prevent="$router.push('/singup')"> зарегистрируйтесь</a>
+          </p>
         </div>
       </div>
+    </div>
   </AppPage>
 </template>
 
@@ -56,8 +59,8 @@ import { computed } from "vue";
 export default {
   setup() {
     const store = useStore();
-    const products = computed(() => store.getters["cart/products"]);
-    const auth = computed(() => store.getters['auth/isAuthenticated'])
+    const products = computed(() => store.getters["cart/cart"]);
+    const auth = computed(() => store.getters["auth/isAuthenticated"]);
     const totalProductsPrice = computed(() =>
       products.value.reduce((acc, itm) => {
         acc += itm.price * itm.quantity;
@@ -76,10 +79,10 @@ export default {
 
 <style scoped>
 .container-total {
-   position: sticky;
+  position: sticky;
   top: 4rem;
 }
 .link-component {
-  color: var(--primary-color)
+  color: var(--primary-color);
 }
 </style>

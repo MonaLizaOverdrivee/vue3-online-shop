@@ -7,18 +7,20 @@
 import Menu from "primevue/menu";
 import { useStore } from "vuex";
 import { computed } from "vue";
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
 export default {
   emits: ["update:modelValue"],
   props: ["modelValue"],
   setup(_, { emit }) {
     const store = useStore();
-    const route = useRoute()
+    const route = useRoute();
     // const activeClass = computed(() => 'activer')
     const menuItem = computed(() => {
       const menu = store.getters["shop/categories"].map(itm => ({
         label: itm.title,
-        class: computed(() => itm.type === route.query.category ? 'active' : '').value,
+        class: computed(() =>
+          itm.type === route.query.category ? "active" : ""
+        ).value,
         command: () => {
           emit("update:modelValue", itm.type);
         }

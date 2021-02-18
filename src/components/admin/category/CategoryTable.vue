@@ -77,7 +77,7 @@ import Column from "primevue/column";
 import CategoryTableItemModal from "./CategoryTableItemModal";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
-import {  ref, reactive } from "vue";
+import { ref, reactive } from "vue";
 import { useStore } from "vuex";
 import { useDelete } from "../../../use/admin/category/deleteCategories";
 export default {
@@ -90,7 +90,7 @@ export default {
     const selectedCategories = ref(null);
     const MODEL = {
       type: undefined,
-      title: undefined,
+      title: undefined
     };
     const category = reactive({ category: { ...MODEL } });
     const visibilityModal = ref(false);
@@ -112,13 +112,13 @@ export default {
           accept: () => {
             selectedCategories.value = null;
             visibilityModal.value = false;
-             category.category = { ...MODEL }
+            category.category = { ...MODEL };
           }
         });
       } else {
         selectedCategories.value = null;
         visibilityModal.value = false;
-        category.category = { ...MODEL }
+        category.category = { ...MODEL };
       }
     }
     return {

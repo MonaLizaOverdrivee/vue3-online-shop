@@ -4,8 +4,16 @@
       <h2 class="p-mt-0 p-mb-1">Панель управления |</h2>
     </template>
     <template #end>
-      <Button :label="$store.getters['auth/userName']" class="p-button-secondary p-button-text"/>
-      <Button label="Выход" class="p-button-secondary p-button-text" icon="pi pi-sign-out" @click="logOut"/>
+      <Button
+        :label="$store.getters['auth/userName']"
+        class="p-button-secondary p-button-text"
+      />
+      <Button
+        label="Выход"
+        class="p-button-secondary p-button-text"
+        icon="pi pi-sign-out"
+        @click="logOut"
+      />
     </template>
   </Menubar>
 </template>
@@ -20,7 +28,7 @@ export default {
         {
           label: "Менеджер товаров",
           icon: "pi pi-sliders-h",
-          to: "/admin/product",
+          to: "/admin/product"
         },
         {
           label: "Редактор категории",
@@ -31,11 +39,11 @@ export default {
     };
   },
   methods: {
-      logOut(){
-        this.$store.dispatch('auth/logOut')
-        this.$router.push('/')
-      }
-    },
+    logOut() {
+      this.$store.dispatch("auth/logOut");
+      this.$router.push("/");
+    }
+  },
   components: { Menubar, Button }
 };
 </script>
@@ -45,7 +53,6 @@ export default {
   position: sticky;
   top: 0;
   border: 0 !important;
-  margin: 0 -8px;
   padding: 0.7rem !important;
   box-shadow: 0px 3px 4px -1px;
 }

@@ -1,39 +1,36 @@
-
 export default {
   namespaced: true,
   state() {
     return {
-      products: []
+      cart: {}
     };
   },
   getters: {
-    products: ({ products }) => Object.keys(products).map(itm => ({id: itm, ...products[itm]})),
-    quantityProductsInCart: ({ products }) => Object.keys(products).length
+    cart: ({ cart }) =>
+      Object.keys(cart).map(itm => ({ id: itm, ...cart[itm] })),
+    quantityProductsInCart: ({ cart }) => Object.keys(cart).length
   },
   mutations: {
-    ADD_TO_CART(state, payload){
-      state.products[payload.id] = payload
-      localStorage.setItem('userCart', JSON.stringify(state.products))
+    ADD_TO_CART(state, payload) {
+      state.cart[payload.id] = payload;
+      localStorage.setItem("userCart", JSON.stringify(state.cart));
     },
     SET_CART(state, payload) {
-      state.products[payload.id].quantity = payload.quantity
-      if(state.products[payload.id].quantity === 0) delete state.products[payload.id]
-      
-      localStorage.setItem('userCart', JSON.stringify(state.products))
-      console.log(' SET_CART', payload.quantity)
-      
+      state.cart[payload.id].quantity = payload.quantity;
+      if (state.cart[payload.id].quantity === 0) delete state.cart[payload.id];
+      localStorage.setItem("userCart", JSON.stringify(state.cart));
     },
     SET_PRODUCTS(state, products) {
-      state.products = products;
+      state.cart = products;
     },
     REMOVE_PRODUCTS(state, id) {
-      delete state.products[id]
-      localStorage.setItem('userCart', JSON.stringify(state.products))
+      delete state.cart[id];
+      localStorage.setItem("userCart", JSON.stringify(state.cart));
     }
   },
   actions: {
     getProductsForCart({ commit }) {
-      const result = localStorage.getItem('userCart') !== null ? JSON.parse(localStorage.getItem('userCart')) : {}
+      const result = JSON.parse(localStorage.getItem("userCart")) ?? {};
       commit("SET_PRODUCTS", result);
     }
   }

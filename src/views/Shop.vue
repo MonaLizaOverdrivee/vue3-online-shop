@@ -19,15 +19,11 @@ import ShopView from "../components/shop/ShopView";
 import ShopFilter from "../components/shop/ShopFilter";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { computed, onMounted } from "vue";
+import { computed  } from "vue";
 export default {
   setup() {
     const route = useRoute();
     const queryParam = computed(() => route.query);
-    onMounted(async () => {
-      await store.dispatch("shop/getAllProducts");
-      await store.dispatch("shop/getCategories");
-    });
     const store = useStore();
     const products = computed(() =>
       store.getters["shop/products"]

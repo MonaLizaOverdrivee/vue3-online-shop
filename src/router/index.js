@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import store from '../store'
+import store from "../store";
 
 const routes = [
   {
@@ -84,8 +84,11 @@ const routes = [
     ]
   },
   {
-    path: '/:notFound(.*)',
-    name: 'NotFound',
+    path: "/:notFound(.*)",
+    name: "NotFound",
+    meta: {
+      layout: 'main'
+    },
     component: () => import("../views/PageNotFound")
   }
 ];
@@ -98,17 +101,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const validRole = store.getters['auth/checkValidRole']
-  const userRole = store.getters['auth/userRole']
-  const acsess = validRole && (userRole === 'admin')
-  console.log(validRole, userRole, acsess)
-  if(acsess && to.meta.layout === 'admin'){
-    next()
-  }else if(to.meta.layout === 'main' || to.meta.layout === 'auth'){
-    next()
-  }else {
-    next('/auth')
+  const validRole = store.getters["auth/checkValidRole"];
+  const userRole = store.getters["auth/userRole"];
+  const acsess = validRole && userRole === "admin";
+
+  if (acsess && to.meta.layout === "admin") {
+    next();
+  } else if (!acsess && to.meta.layout === "admin") {
+    next("/auth");
+  } else {
+    next();
   }
-})
+});
 
 export default router;

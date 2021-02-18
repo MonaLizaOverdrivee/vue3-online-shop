@@ -17,21 +17,21 @@
       </div>
       <div class="product-grid-item-bottom">
         <span class="product-price">{{ price }} РУБ</span>
-       <AppAddButton :data="data" />
+        <AppAddButton :data="data" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import AppAddButton from '../ui/AppAddButton'
+import AppAddButton from "../ui/AppAddButton";
 import { useCountStatusStyle } from "../../use/countViewStyle";
 import { computed, reactive, toRefs } from "vue";
 export default {
   props: ["data"],
   setup(props) {
     const count = computed(() => props.data.count);
-    const product = reactive(props.data)
+    const product = reactive(props.data);
     return {
       ...useCountStatusStyle(count),
       ...toRefs(product)
@@ -42,7 +42,6 @@ export default {
 </script>
 
 <style scoped>
-
 .p-dropdown {
   width: 14rem;
   font-weight: 400;

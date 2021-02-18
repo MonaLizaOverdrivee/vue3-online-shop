@@ -1,8 +1,6 @@
 <template>
   <Button
-    @click="
-      addToCart();
-    "
+    @click="addToCart()"
     :label="label"
     icon="pi pi-shopping-cart"
     :disabled="count === 0"
@@ -27,23 +25,23 @@
 <script>
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
-import { useAddCart } from '../../use/addCart'
+import { useAddCart } from "../../use/addCart";
 export default {
   props: {
     data: Object,
     label: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   setup(props) {
-  return {
-    ...useAddCart(props),
-    count: props.data.count,
-    id: props.data.id
-  };
+    return {
+      ...useAddCart(props),
+      count: props.data.count,
+      id: props.data.id
+    };
   },
-  components: { Button, InputNumber },
+  components: { Button, InputNumber }
 };
 </script>
 

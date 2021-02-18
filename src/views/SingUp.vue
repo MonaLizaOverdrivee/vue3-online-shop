@@ -1,7 +1,7 @@
 <template>
-   <h1 class="p-text-center">Регистрация</h1>
+  <h1 class="p-text-center">Регистрация</h1>
   <form class="p-fluid p-input-filled" @submit.prevent="onSubmit">
-     <div class="p-field">
+    <div class="p-field">
       <label for="name">Имя</label>
       <InputText
         id="name"
@@ -43,17 +43,15 @@
 <script>
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
-import { useSignUp } from '../use/singUp'
+import { useSignUp } from "../use/singUp";
 export default {
-setup() {
-  return {
-    ...useSignUp()
-  }
-},
-components: { InputText, Button }
-}
+  setup() {
+    return {
+      ...useSignUp()
+    };
+  },
+  components: { InputText, Button }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

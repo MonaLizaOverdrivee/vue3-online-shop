@@ -9,7 +9,11 @@
   >
     <div class="p-field">
       <label for="type">Системное имя</label>
-      <InputText id="type" v-model.trim="type" :class="{ 'p-invalid': tpError }"/>
+      <InputText
+        id="type"
+        v-model.trim="type"
+        :class="{ 'p-invalid': tpError }"
+      />
       <small class="p-error">{{ tpError }}</small>
     </div>
     <div class="p-field">
@@ -57,7 +61,7 @@ export default {
       ...useModal(props.category, emit)
     };
   },
-  components: {  InputText, Dialog, Button }
+  components: { InputText, Dialog, Button }
 };
 </script>
 

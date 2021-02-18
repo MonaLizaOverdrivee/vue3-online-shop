@@ -30,14 +30,14 @@ import Button from "primevue/button";
 import Toolbar from "primevue/toolbar";
 import ShopViewGrid from "../shop/ShopViewGrid";
 import ShopViewList from "../shop/ShopViewList";
-import {  ref } from "vue";
+import { ref } from "vue";
 
 export default {
   props: ["products"],
   setup() {
     const layout = ref("Grid");
     function toogleView() {
-      layout.value = layout.value === 'Grid' ? 'List' : 'Grid'
+      layout.value = layout.value === "Grid" ? "List" : "Grid";
     }
     return {
       layout,

@@ -1,6 +1,6 @@
 <template>
   <div class="p-col-12 p-d-flex product-list">
-    <img :src="img" class="product-img p-shadow-2" />
+    <img :src="img" class="product-img p-shadow-2" @click="$router.push('/product/' + id)"/>
     <div class="product-info p-ml-3">
       <h3 class="p-mt-0 p-mb-1">{{ title }}</h3>
       <p class="p-m-0">Описание товара</p>
@@ -8,15 +8,14 @@
         :label="category"
         class="p-button-text p-button-plain categories"
         icon="pi pi-sun"
+        @click="$router.push(`/?category=${category}`)"
       />
     </div>
-    <div
-      class="p-flex-column p-d-flex p-jc-between"
-    >
+    <div class="p-flex-column p-d-flex p-jc-between">
       <Button
         icon="pi pi-times"
         class="p-button-rounded p-button-danger p-button-text p-as-end"
-        @click="$store.commit('cart/REMOVE_PRODUCTS', id)"
+        @click="removeProduct"
         style="width: auto"
       />
       <div>
@@ -42,22 +41,26 @@
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import { reactive, toRefs } from "vue";
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 export default {
   props: ["data"],
   setup(props) {
     const product = reactive(props.data);
-    const store = useStore()
-    function incQuant(e){
-      const quantity = e.value
-      // console.log(props.data)
-       store.commit('cart/SET_CART', {
-         ...props.data,
-              quantity: quantity
-            })
+    const store = useStore();
+    function removeProduct() {
+      store.commit('cart/REMOVE_PRODUCTS', props.data.id)
+      store.commit('shop/SET_COUNT', {id:props.data.id, count: props.data.count})
+    }
+    function incQuant(e) {
+      const quantity = e.value;
+      store.commit("cart/SET_CART", {
+        ...props.data,
+        quantity: quantity
+      });
     }
     return {
       incQuant,
+      removeProduct,
       ...toRefs(product)
       // description: props.data.description,
     };
@@ -92,7 +95,7 @@ export default {
   flex: 1 1 auto;
 }
 .product-img {
-  /* padding: .5rem; */
+  cursor: pointer;
   max-width: 200px;
   max-height: 150px;
 }

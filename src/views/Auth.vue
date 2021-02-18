@@ -24,8 +24,12 @@
       />
       <small id="password-help" class="p-error">{{ pError }}</small>
     </div>
-    <Button label="Войти" type="submit"/>
-    <Button label="Зрегистрироваться" class="p-button-text" @click="$router.push('/singup')" />
+    <AppLoaderButton />
+    <Button
+      label="Зрегистрироваться"
+      class="p-button-text"
+      @click="$router.push('/singup')"
+    />
     <div class="p-text-center">
       <small class="p-error" v-if="invalidSubmitMessage">{{
         invalidSubmitMessage
@@ -38,12 +42,12 @@
 import { useFormLogin } from "../use/login";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import AppLoaderButton from '../components/ui/AppLoaderButton'
 
 export default {
   setup() {
-    document.title = "Вход";
     return { ...useFormLogin() };
   },
-  components: { InputText, Button }
+  components: { InputText, Button, AppLoaderButton }
 };
 </script>

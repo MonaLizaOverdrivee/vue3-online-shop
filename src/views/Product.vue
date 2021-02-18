@@ -6,11 +6,19 @@
     <div class="p-col p-d-flex p-flex-column">
       <h1 class="p-m-0">{{ product.title }}</h1>
       <div class="discription">
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi temporibus, consequuntur laboriosam quisquam recusandae esse dolore quam quod soluta dolorem officia similique. Sit, sunt. Voluptatibus sint enim neque quam ipsam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque libero enim nulla quasi asperiores tenetur error autem fugiat nostrum veritatis unde officiis amet aut sunt, ex iure nemo illum at?</p>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi
+          temporibus, consequuntur laboriosam quisquam recusandae esse dolore
+          quam quod soluta dolorem officia similique. Sit, sunt. Voluptatibus
+          sint enim neque quam ipsam. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Itaque libero enim nulla quasi asperiores tenetur
+          error autem fugiat nostrum veritatis unde officiis amet aut sunt, ex
+          iure nemo illum at?
+        </p>
       </div>
       <div class="p-d-flex p-jc-between">
-     <span class="product-price">{{ product.price }} РУБ</span>
-    <AppAddButton :data="product" label="Добавить в корзину"/>
+        <span class="product-price"><strong>Цена:</strong> {{ product.price }} РУБ</span>
+        <AppAddButton :data="product" label="Добавить в корзину" />
       </div>
     </div>
   </div>
@@ -18,23 +26,19 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
-import { useAddCart } from "../use/addCart";
-import AppAddButton from '../components/ui/AppAddButton'
+import { computed } from "vue";
+import AppAddButton from "../components/ui/AppAddButton";
 export default {
   props: ["id"],
   setup(props) {
     const store = useStore();
-    onMounted(async () => {
-      await store.commit("shop/SET_SELECTED_PRODUCT", props.id);
-    });
+    store.commit("shop/SET_SELECTED_PRODUCT", props.id);
     const product = computed(() => store.getters["shop/selectedProduct"]);
-    console.log(useAddCart);
     return {
       product
     };
   },
-components: { AppAddButton }
+  components: { AppAddButton }
 };
 </script>
 

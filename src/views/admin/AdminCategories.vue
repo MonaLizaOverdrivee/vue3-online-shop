@@ -20,4 +20,3 @@ export default {
   components: { AppPage, CategoryTable }
 };
 </script>
-

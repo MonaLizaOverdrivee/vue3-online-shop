@@ -24,3 +24,15 @@
   .count-quantity-success {
     background: rgb(0, 128, 0, 0.3);
   }
+  .custom-scrolltop {
+    background-color: var(--primary-color) !important;
+  }
+  .p-button:focus {
+    box-shadow: none !important;
+  }
+  body {
+    margin: 0;
+  }
+  #app {
+    font-family: var(--font-family);
+  }

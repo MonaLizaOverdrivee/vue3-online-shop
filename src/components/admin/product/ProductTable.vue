@@ -114,7 +114,7 @@ export default {
     const visibilityModal = ref(false);
 
     function showModal(val) {
-      console.log(val)
+      console.log(val);
       product.product = { ...val };
       visibilityModal.value = true;
     }

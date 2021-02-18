@@ -11,7 +11,8 @@ export default {
   },
   getters: {
     products: ({ products }) => Object.keys(products).map(itm => products[itm]),
-    categories: ({ categories }) => Object.keys(categories).map(itm => categories[itm]),
+    categories: ({ categories }) =>
+      Object.keys(categories).map(itm => categories[itm]),
     selectedProduct: ({ selectedProduct }) => selectedProduct
     //
   },
@@ -32,7 +33,7 @@ export default {
       state.categories = category;
     },
     REMOVE_CATEGORIES(state, category) {
-      category.forEach(itm => delete state.categories[itm.id])
+      category.forEach(itm => delete state.categories[itm.id]);
     },
     ADD_NEW_PRODUCT(state, newProd) {
       state.products[newProd.id] = newProd;
@@ -41,23 +42,22 @@ export default {
   actions: {
     async getAllProducts({ commit }) {
       const { data } = await requestToDatabase.get("/products.json");
-      for(let key in data){
-      data[key] = {id: key, ...data[key]}
+      for (let key in data) {
+        data[key] = { id: key, ...data[key] };
       }
       commit("SET_PRODUCTS", data);
     },
     async getCategories({ commit }) {
       const { data } = await requestToDatabase.get("/categories.json");
-      for(let key in data){
-      data[key] = {id: key, ...data[key]}
+      for (let key in data) {
+        data[key] = { id: key, ...data[key] };
       }
       commit("SET_CATEGORIES", data);
     },
     async requestNewProduct({ commit }, product) {
-      const { data } = await requestToDatabase.post('/products.json', product)
-      commit("ADD_NEW_PRODUCT", {...product, id: data.name});
-      console.log(product);
-    },
+      const { data } = await requestToDatabase.post("/products.json", product);
+      commit("ADD_NEW_PRODUCT", { ...product, id: data.name });
+    }
   }
 
   // async getFilterProducts({ commit }, category){

@@ -3,9 +3,13 @@ import { useStore } from "vuex";
 
 export function useAddCart(props) {
   const store = useStore();
-  const cart = computed(() => store.getters["cart/products"]);
-  const checkCart = computed(() => cart.value.find(itm => itm.id === props.data.id))
-  const quantityInCart = computed(() => checkCart.value ? checkCart.value.quantity : 0);
+  const cart = computed(() => store.getters["cart/cart"]);
+  const checkCart = computed(() =>
+    cart.value.find(itm => itm.id === props.data.id)
+  );
+  const quantityInCart = computed(() =>
+    checkCart.value ? checkCart.value.quantity : 0
+  );
   const quantity = ref(quantityInCart.value);
   function incQuantity() {
     store.commit("cart/SET_CART", {
@@ -16,8 +20,8 @@ export function useAddCart(props) {
       store.commit("shop/SET_COUNT", { id: props.data.id, count: 0 });
   }
   function addToCart() {
-    quantity.value = 1
-    store.commit("cart/ADD_TO_CART", {...props.data, quantity: 1})
+    quantity.value = 1;
+    store.commit("cart/ADD_TO_CART", { ...props.data, quantity: 1 });
   }
   return {
     addToCart,

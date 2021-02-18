@@ -1,6 +1,7 @@
 <template>
+   <ProgressBar mode="indeterminate" style="height: .5em" v-if="$store.getters['loader/loaderVisible']"/>
   <TheHeader />
-  <div class="p-grid p-jc-center">
+  <div class="p-grid p-jc-center" v-if="!$store.getters['loader/loaderVisible']">
     <div class="p-col  main-layout">
       <router-view />
     </div>
@@ -8,9 +9,10 @@
 </template>
 
 <script>
+import ProgressBar from 'primevue/progressbar';
 import TheHeader from "../components/TheHeader";
 export default {
-  components: { TheHeader }
+  components: { TheHeader, ProgressBar }
 };
 </script>
 
