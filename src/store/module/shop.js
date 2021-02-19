@@ -1,4 +1,3 @@
-import { Promise } from "core-js";
 import { requestToDatabase } from "../../axios/request";
 
 export default {

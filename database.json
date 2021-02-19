@@ -208,5 +208,17 @@
     { "type": "fish", "title": "Рыба", "id": "4" },
     { "type": "greens", "title": "Зелень", "id": "5" },
     { "type": "berries", "title": "Ягоды", "id": "6" }
-  ]
+  ],
+  "-Mdsad02Idkls": {
+    "time": 165764346876,
+    "userId": "-MVP-wsfoP",
+    "prise": 123,
+    "products": {
+      "-Maasopd_dpsdL12": {
+        "quantity": 3,
+        "price": 55,
+        "title": "ASDDD"
+      }
+    }
+  }
 }

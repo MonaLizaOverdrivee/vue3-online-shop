@@ -9,7 +9,7 @@ export default {
       expiresDate: localStorage.getItem("EXPIRES_IN"),
       refreshToken: localStorage.getItem("REFRESH_TOKEN"),
       user: {
-        id: "",
+        id: sessionStorage.getItem("userId"),
         role: sessionStorage.getItem("userRole"),
         name: sessionStorage.getItem("userName")
       }

@@ -65,6 +65,15 @@ const routes = [
     }
   },
   {
+    path: "/user",
+    name: "User",
+    component: () => import("../views/User.vue"),
+    meta: {
+      layout: "main",
+      title: "Личный кабинет"
+    }
+  },
+  {
     path: "/admin",
     name: "Dashboard",
     redirect: "/admin/product",

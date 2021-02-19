@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="p-col p-fluid">
-          <Button label="Оплатить" :disabled="!auth" />
+          <Button label="Оплатить" :disabled="!auth" @click="setOrder"/>
           <p class="p-text-center" v-if="!auth">
             Для оплаты <a href="" class="link-component" @click.prevent="$store.commit('TOGGLE_VISIBLE')">войдите</a> или
             <a href="" class="link-component" @click.prevent="$router.push('/singup')"> зарегистрируйтесь</a>
@@ -67,7 +67,12 @@ export default {
         return acc;
       }, 0)
     );
+
+    function setOrder() {
+      store.dispatch('cart/setOrderList', totalProductsPrice.value)
+    }
     return {
+      setOrder,
       auth,
       products,
       totalProductsPrice
