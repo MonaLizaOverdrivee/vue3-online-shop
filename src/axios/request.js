@@ -16,7 +16,7 @@ requestToDatabase.interceptors.request.use(config => {
   if(store.getters['auth/isAuthenticated'] && store.getters['auth/isExpires']) {
     store.dispatch('auth/refreshToken')
   }
-  config.params['auth'] = store.state['auth/token']
+  config.params['auth'] = store.getters['auth/token']
   return  config
 })
 

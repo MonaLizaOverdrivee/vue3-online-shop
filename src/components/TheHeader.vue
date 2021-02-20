@@ -1,7 +1,7 @@
 <template>
   <Menubar :model="items" style="z-index: 999">
     <template #start>
-      <h2 class="p-mt-0 p-mb-1">OnlineShop |</h2>
+      <h2 class="header__logo" @click="$router.push('/')">OnlineShop |</h2>
     </template>
     <pre>{{ auth }}</pre>
     <template #end>
@@ -9,6 +9,7 @@
         :label="$store.getters['auth/userName']"
         class="p-button-secondary p-button-text"
         v-if="auth"
+        @click="$router.push('/user')"
       />
       <Button
         label="Выход"
@@ -96,7 +97,7 @@ export default {
       items: [
         {
           label: "Магазин",
-          to: "/"
+          to: "/shop"
         },
         {
           label: "Вопросы",
@@ -130,5 +131,9 @@ export default {
   border: 0 !important;
   padding: 0.7rem !important;
   box-shadow: 0px 3px 4px -1px;
+}
+.header__logo {
+  margin: 0 0 .25rem;
+  cursor: pointer;
 }
 </style>

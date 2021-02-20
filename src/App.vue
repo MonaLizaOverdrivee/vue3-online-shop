@@ -18,6 +18,7 @@ export default {
     const layout = computed(() => route.meta.layout);
     onMounted(async() => {
       await store.dispatch("getAppData");
+      await store.dispatch('cart/getOrders')
     });
     return { layout };
   },

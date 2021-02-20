@@ -3,7 +3,7 @@ import store from "../store";
 
 const routes = [
   {
-    path: '/home',
+    path: '/',
     component: () => import('../views/Home'),
     meta: {
       layout: 'main',
@@ -11,7 +11,7 @@ const routes = [
     }
   },
   {
-    path: "/",
+    path: "/shop",
     name: "Shop",
     component: () => import("../views/Shop.vue"),
     meta: {

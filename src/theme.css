@@ -36,3 +36,6 @@
   #app {
     font-family: var(--font-family);
   }
+  .p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+    box-shadow: none !important;
+  }
