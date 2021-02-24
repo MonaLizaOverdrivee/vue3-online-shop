@@ -2,6 +2,7 @@ import { createStore } from "vuex";
 import cart from "./module/cart";
 import shop from "./module/shop";
 import auth from "./module/auth";
+import order from "./module/order";
 import loader from "./module/loader";
 
 export default createStore({
@@ -26,18 +27,19 @@ export default createStore({
         await dispatch("cart/getProductsForCart");
         await dispatch("shop/getAllProducts");
         await dispatch("shop/getCategories");
-        await dispatch('cart/getOrders')
+        await dispatch('order/getOrders')
         commit('loader/TOGGLE_LOADER_VISIBLE', false)
       } catch (error) {
         console.log(error)
       }
-     
+
     }
   },
   modules: {
     cart,
     shop,
     auth,
-    loader
+    loader,
+    order
   }
 });

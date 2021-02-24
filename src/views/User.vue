@@ -6,8 +6,7 @@
           <i class="pi pi-user"></i>
           <span class="title-tab">Инфо</span>
         </template>
-       <UserInfo />
-       <pre>{{userInfo}}</pre>
+       <UserInfo :data="userInfo"/>
       </TabPanel>
       <TabPanel>
         <template #header>
@@ -41,7 +40,7 @@ export default {
     const store = useStore();
     const userInfo = computed(() => store.getters["auth/userName"]);
     const orderInfo = computed(() => {
-      const arr = store.getters["cart/orderUser"]
+      const arr = store.getters["order/orderUser"]
       return arr.sort((a, b) => b.time - a.time)
       });
     console.log(orderInfo.value);

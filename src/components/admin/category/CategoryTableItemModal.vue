@@ -47,7 +47,7 @@
 import InputText from "primevue/inputtext";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
-import { useModal } from "../../../use/admin/category/modalDetail";
+import { useModal } from "../../../use/admin/category/editCategory";
 import { computed } from "vue";
 
 export default {

@@ -71,11 +71,11 @@ export default {
     async function onPay(){
       try {
         await pay(totalProductsPrice.value)
-        store.dispatch('cart/setOrderList', totalProductsPrice.value)
+        store.dispatch('order/setOrderList', totalProductsPrice.value)
       } catch (e) {
         console.log(e)
       }
-      } 
+      }
     return {
       onPay,
       auth,

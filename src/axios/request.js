@@ -20,4 +20,11 @@ requestToDatabase.interceptors.request.use(config => {
   return  config
 })
 
+requestToDatabase.interceptors.response.use(function (response) {
+  console.log(response)
+  return response;
+}, function () {
+  store.dispatch('auth/logOut')
+});
+
 export { requestToDatabase, authInApp };
