@@ -12,7 +12,7 @@ export default {
     cart: ({ cart }) =>
       Object.keys(cart).map(itm => ({ id: itm, ...cart[itm] })),
     quantityProductsInCart: ({ cart }) => Object.keys(cart).length,
-    order: ({ order }) => order,
+    order: ({ order }) => Object.keys(order).map(itm => ({id: itm, ...order[itm]})),
     orderUser: ({ orderUser }) => Object.keys(orderUser).map(itm => ({nameOrder: itm, ...orderUser[itm]}))
   },
   mutations: {
@@ -35,6 +35,9 @@ export default {
     ADD_TO_ORDER(state, payload){
       state.order[payload.id] =  payload.data
     },
+    ADD_ALL_ORDERS(state, payload) {
+      state.order = payload
+    },
     CLEAR_CART(state){
       state.cart = {}
       localStorage.removeItem("userCart")
@@ -48,12 +51,16 @@ export default {
       const result = JSON.parse(localStorage.getItem("userCart")) ?? {};
       commit("SET_PRODUCTS", result);
     },
+    async getAllOrders({commit}) {
+      const { data } = await requestToDatabase.get('/orders.json')
+      commit('ADD_ALL_ORDERS', data)
+      console.log(data)
+    },
     async getOrders({rootState, commit}) {
       const userId = rootState.auth.user.id
       const { data } = await requestToDatabase.get(`/users/${userId}/orderlist.json`)
       const request = Object.keys(data).map(itm => requestToDatabase.get(`/orders/${itm}.json`))
       const response = await Promise.all(request)
-      console.log(request)
       const responseSerialize = response.reduce((acc, itm) => {
         const product = itm.data.products
         const products = Object.keys(product).map(itm => ({id: itm, ...product[itm]}))
@@ -62,10 +69,8 @@ export default {
           products: products,
           time: itm.data.time,
         }
-        //Object.keys(itm.data.products).map(itm => ({id: itm, ...itm.data.products}))
         return acc
       }, {})
-      console.log(responseSerialize)
       commit('ADD_TO_USER_ORDER', responseSerialize)
 
     },
@@ -89,8 +94,6 @@ export default {
           products: products,
           orderNumber: orderNumber
         }
-        console.log('order', orderInfo)
-        console.log(commit, requestToDatabase)
         const { data } = await requestToDatabase.post('/orders.json', orderInfo)
         await requestToDatabase.put(`/users/${userId}/orderlist/${data.name}.json`, {id: data.name})
         commit('ADD_TO_ORDER', { data: {...orderInfo}, id: data.name })

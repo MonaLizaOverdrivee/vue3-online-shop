@@ -1,6 +1,6 @@
 <template>
   <div class="p-grid">
-    <div class="p-col-12">asdsad</div>
+    <div class="p-col-12"></div>
     <div class="p-col-2" v-for="cat in categories" :key="cat.id" @click="$router.push(`/shop?category=${cat.type}`)">
       <div class="card p-d-flex p-flex-column p-jc-end p-shadow-9" :style="'background-color: ' + randomColor()">
       <img :src="cat.image" alt="" class="img-cat">

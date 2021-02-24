@@ -26,6 +26,7 @@ export default createStore({
         await dispatch("cart/getProductsForCart");
         await dispatch("shop/getAllProducts");
         await dispatch("shop/getCategories");
+        await dispatch('cart/getOrders')
         commit('loader/TOGGLE_LOADER_VISIBLE', false)
       } catch (error) {
         console.log(error)

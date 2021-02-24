@@ -34,7 +34,13 @@ export default {
           label: "Редактор категории",
           icon: "pi pi-tags",
           to: "/admin/categories"
+        },
+        {
+          label: "Список заказов",
+          icon: "pi pi-inbox",
+          to: "/admin/orders"
         }
+        
       ]
     };
   },

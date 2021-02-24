@@ -40,8 +40,11 @@ export default {
   setup() {
     const store = useStore();
     const userInfo = computed(() => store.getters["auth/userName"]);
-    const orderInfo = computed(() => store.getters["cart/orderUser"]);
-    console.log(userInfo.value);
+    const orderInfo = computed(() => {
+      const arr = store.getters["cart/orderUser"]
+      return arr.sort((a, b) => b.time - a.time)
+      });
+    console.log(orderInfo.value);
     return {
       userInfo,
       orderInfo,

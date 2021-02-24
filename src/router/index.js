@@ -97,6 +97,15 @@ const routes = [
           title: "Редактор категории"
         },
         component: () => import("../views/admin/AdminCategories")
+      },
+      {
+        path: "orders",
+        name: "Orders",
+        meta: {
+          layout: "admin",
+          title: "Заказы"
+        },
+        component: () => import("../views/admin/AdminOrders")
       }
     ]
   },
@@ -121,7 +130,6 @@ router.beforeEach((to, from, next) => {
   // const validRole = store.getters["auth/checkValidRole"];
   const userRole = store.getters["auth/userRole"];
   const acsess = userRole === "admin";
-  console.log(userRole)
 
   if (acsess && to.meta.layout === "admin") {
     next();

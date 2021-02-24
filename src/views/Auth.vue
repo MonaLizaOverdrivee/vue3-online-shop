@@ -10,6 +10,7 @@
         aria-describedby="login-help"
         :class="{ 'p-invalid': lError }"
         @blur="lBlur"
+        @focus="invalidSubmitMessage = ''"
       />
       <small id="login-help" class="p-error">{{ lError }}</small>
     </div>
@@ -21,6 +22,7 @@
         v-model="pass"
         :class="{ 'p-invalid': pError }"
         @blur="pBlur"
+        @focus="invalidSubmitMessage = ''"
       />
       <small id="password-help" class="p-error">{{ pError }}</small>
     </div>

@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="p-col p-fluid">
-          <Button label="Оплатить" :disabled="!auth" @click="setOrder"/>
+          <Button label="Оплатить" :disabled="!auth || products.length === 0" @click="onPay"/>
           <p class="p-text-center" v-if="!auth">
             Для оплаты <a href="" class="link-component" @click.prevent="$store.commit('TOGGLE_VISIBLE')">войдите</a> или
             <a href="" class="link-component" @click.prevent="$router.push('/singup')"> зарегистрируйтесь</a>
@@ -53,6 +53,7 @@
 import Button from "primevue/button";
 import AppPage from "../components/ui/AppPage";
 import CartProductList from "../components/cart/CartProductList";
+import { pay } from '../utils/cloudpay'
 import { useStore } from "vuex";
 import { computed } from "vue";
 
@@ -67,12 +68,16 @@ export default {
         return acc;
       }, 0)
     );
-
-    function setOrder() {
-      store.dispatch('cart/setOrderList', totalProductsPrice.value)
-    }
+    async function onPay(){
+      try {
+        await pay(totalProductsPrice.value)
+        store.dispatch('cart/setOrderList', totalProductsPrice.value)
+      } catch (e) {
+        console.log(e)
+      }
+      } 
     return {
-      setOrder,
+      onPay,
       auth,
       products,
       totalProductsPrice

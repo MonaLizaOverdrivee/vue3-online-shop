@@ -49,12 +49,11 @@ export default {
     async login({ commit }, dataForm) {
       try {
         commit('loader/TOGGLE_LOADER_BUTTON', true, {root: true})
-        const {
-          data
-        } = await authInApp.post(
+        const { data } = await authInApp.post(
           `accounts:signInWithPassword?key=${process.env.VUE_APP_KEY}`,
           { ...dataForm, returnSecureToken: true }
         );
+        console.log('auth', data)
         const { data: user } = await requestToDatabase.get(
           `users/${data.localId}.json`
         );
@@ -62,7 +61,9 @@ export default {
         commit("SET_TOKEN", data);
         commit('loader/TOGGLE_LOADER_BUTTON', false, {root: true})
       } catch (e) {
-        console.log(e)
+        console.log(e.response.data.error.message)
+        commit('loader/TOGGLE_LOADER_BUTTON', false, {root: true})
+        return Promise.reject()
       }
     },
     logOut({ commit }) {
