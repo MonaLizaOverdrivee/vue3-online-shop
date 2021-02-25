@@ -11,13 +11,11 @@ export default {
   getters: {
     order: ({ order }) =>
       Object.keys(order).map(itm => ({ id: itm, ...order[itm] })),
-    orderUser: ({ orderUser }) =>
-      orderUser
-        ? Object.keys(orderUser).map(itm => ({
+    orderUser: ({ userOrder }) => Object.keys(userOrder).map(itm => ({
             nameOrder: itm,
-            ...orderUser[itm]
+            ...userOrder[itm]
           }))
-        : []
+
   },
   mutations: {
     ADD_TO_ORDER(state, payload) {
@@ -27,7 +25,10 @@ export default {
       state.order = payload;
     },
     ADD_TO_USER_ORDER(state, payload) {
-      state.orderUser = payload;
+      state.userOrder = payload;
+    },
+    CLEAR_USER_ORDER(state){
+      state.userOrder = {}
     }
   },
   actions: {
@@ -40,7 +41,8 @@ export default {
       const { data } = await requestToDatabase.get(
         `/users/${userId}/orderlist.json`
       );
-      const request = Object.keys(data).map(itm =>
+      if(data){
+        const request = Object.keys(data).map(itm =>
         requestToDatabase.get(`/orders/${itm}.json`)
       );
       const response = await Promise.all(request);
@@ -58,6 +60,7 @@ export default {
         return acc;
       }, {});
       commit("ADD_TO_USER_ORDER", responseSerialize);
+    }
     },
     async setOrderList({ commit, rootState }, total) {
       try {

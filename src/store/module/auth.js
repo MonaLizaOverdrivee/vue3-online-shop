@@ -70,6 +70,7 @@ export default {
     },
     logOut({ commit }) {
       commit("CLEAR_USER");
+      commit('order/CLEAR_USER_ORDER', {root: true})
       sessionStorage.clear();
       localStorage.clear();
     },
