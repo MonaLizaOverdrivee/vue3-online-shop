@@ -62,29 +62,38 @@ export default {
       const { data } = await requestToDatabase.post("/products.json", product);
       commit("ADD_NEW_PRODUCT", { ...product, id: data.name });
     },
-    async requestEditProduct({commit}, product){
-      await requestToDatabase.patch(`/products/${product.id}.json`, product)
+    async requestEditProduct({ commit }, product) {
+      await requestToDatabase.patch(`/products/${product.id}.json`, product);
       commit("ADD_NEW_PRODUCT", product);
     },
-    async removeProducts({commit}, products){
-      const request = products.map(itm => requestToDatabase.delete(`/products/${itm.id}.json`))
-      await Promise.all(request)
-      commit('REMOVE_PRODUCT',products)
+    async removeProducts({ commit }, products) {
+      const request = products.map(itm =>
+        requestToDatabase.delete(`/products/${itm.id}.json`)
+      );
+      await Promise.all(request);
+      commit("REMOVE_PRODUCT", products);
     },
 
     async requestNewCategory({ commit }, category) {
-      const { data } = await requestToDatabase.post("/categories.json", category);
+      const { data } = await requestToDatabase.post(
+        "/categories.json",
+        category
+      );
       commit("ADD_NEW_CATEGORIES", { ...category, id: data.name });
     },
-    async requestEditCategory({ commit }, category){
-      await requestToDatabase.patch(`/categories/${category.id}.json`, category)
+    async requestEditCategory({ commit }, category) {
+      await requestToDatabase.patch(
+        `/categories/${category.id}.json`,
+        category
+      );
       commit("ADD_NEW_CATEGORIES", category);
     },
-    async requestRemoveCategory({commit}, category){
-      const request = category.map(itm => requestToDatabase.delete(`/categories/${itm.id}.json`))
-      await Promise.all(request)
-      commit('REMOVE_CATEGORIES', category)
+    async requestRemoveCategory({ commit }, category) {
+      const request = category.map(itm =>
+        requestToDatabase.delete(`/categories/${itm.id}.json`)
+      );
+      await Promise.all(request);
+      commit("REMOVE_CATEGORIES", category);
     }
   }
-
 };

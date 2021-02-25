@@ -11,8 +11,10 @@ export default {
     cart: ({ cart }) =>
       Object.keys(cart).map(itm => ({ id: itm, ...cart[itm] })),
     quantityProductsInCart: ({ cart }) => Object.keys(cart).length,
-    order: ({ order }) => Object.keys(order).map(itm => ({id: itm, ...order[itm]})),
-    orderUser: ({ orderUser }) => Object.keys(orderUser).map(itm => ({nameOrder: itm, ...orderUser[itm]}))
+    order: ({ order }) =>
+      Object.keys(order).map(itm => ({ id: itm, ...order[itm] })),
+    orderUser: ({ orderUser }) =>
+      Object.keys(orderUser).map(itm => ({ nameOrder: itm, ...orderUser[itm] }))
   },
   mutations: {
     ADD_TO_CART(state, payload) {
@@ -31,9 +33,9 @@ export default {
       delete state.cart[id];
       localStorage.setItem("userCart", JSON.stringify(state.cart));
     },
-    CLEAR_CART(state){
-      state.cart = {}
-      localStorage.removeItem("userCart")
+    CLEAR_CART(state) {
+      state.cart = {};
+      localStorage.removeItem("userCart");
     }
   },
   actions: {

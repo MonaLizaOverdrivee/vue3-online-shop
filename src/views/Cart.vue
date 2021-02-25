@@ -38,10 +38,27 @@
           </div>
         </div>
         <div class="p-col p-fluid">
-          <Button label="Оплатить" :disabled="!auth || products.length === 0" @click="onPay"/>
+          <Button
+            label="Оплатить"
+            :disabled="!auth || products.length === 0"
+            @click="onPay"
+          />
           <p class="p-text-center" v-if="!auth">
-            Для оплаты <a href="" class="link-component" @click.prevent="$store.commit('TOGGLE_VISIBLE')">войдите</a> или
-            <a href="" class="link-component" @click.prevent="$router.push('/singup')"> зарегистрируйтесь</a>
+            Для оплаты
+            <a
+              href=""
+              class="link-component"
+              @click.prevent="$store.commit('TOGGLE_VISIBLE')"
+              >войдите</a
+            >
+            или
+            <a
+              href=""
+              class="link-component"
+              @click.prevent="$router.push('/singup')"
+            >
+              зарегистрируйтесь</a
+            >
           </p>
         </div>
       </div>
@@ -53,7 +70,7 @@
 import Button from "primevue/button";
 import AppPage from "../components/ui/AppPage";
 import CartProductList from "../components/cart/CartProductList";
-import { pay } from '../utils/cloudpay'
+import { pay } from "../utils/cloudpay";
 import { useStore } from "vuex";
 import { computed } from "vue";
 
@@ -68,14 +85,14 @@ export default {
         return acc;
       }, 0)
     );
-    async function onPay(){
+    async function onPay() {
       try {
-        await pay(totalProductsPrice.value)
-        store.dispatch('order/setOrderList', totalProductsPrice.value)
+        await pay(totalProductsPrice.value);
+        store.dispatch("order/setOrderList", totalProductsPrice.value);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-      }
+    }
     return {
       onPay,
       auth,

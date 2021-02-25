@@ -117,7 +117,7 @@ export default {
   box-shadow: 0px 3px 4px -1px;
 }
 .header__logo {
-  margin: 0 0 .25rem;
+  margin: 0 0 0.25rem;
   cursor: pointer;
 }
 </style>

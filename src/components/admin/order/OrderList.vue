@@ -8,28 +8,26 @@
       </template>
     </Column>
     <Column field="price" header="price"></Column>
-</DataTable>
+  </DataTable>
 </template>
 
 <script>
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import { useStore } from 'vuex';
-import { computed } from 'vue'
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import { useStore } from "vuex";
+import { computed } from "vue";
 export default {
   setup() {
-    const store = useStore()
-    store.dispatch('cart/getAllOrders')
-    const orders = computed(() => store.getters['cart/order'])
-    console.log(orders)
+    const store = useStore();
+    store.dispatch("order/getAllOrders");
+    const orders = computed(() => store.getters["order/order"]);
+    console.log(orders);
     return {
       orders
-    }
+    };
   },
-components: { DataTable, Column }
-}
+  components: { DataTable, Column }
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

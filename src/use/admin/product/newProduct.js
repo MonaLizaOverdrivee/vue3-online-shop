@@ -16,7 +16,10 @@ export function useModalNew(emit) {
   });
   const store = useStore();
   const schema = yup.object({
-    title: yup.string().trim().required("Укажите наименование товара"),
+    title: yup
+      .string()
+      .trim()
+      .required("Укажите наименование товара"),
     category: yup.string().required("Выбирете категорию"),
     price: yup.number().required("Укажите цену товара за шт."),
     count: yup.number().required("Укажите количество товаров")
@@ -27,15 +30,24 @@ export function useModalNew(emit) {
   });
 
   const { value: img, handleBlur: iBlur } = useField("img");
-  const { value: title, errorMessage: tError, handleBlur: tBlur } = useField("title");
+  const { value: title, errorMessage: tError, handleBlur: tBlur } = useField(
+    "title"
+  );
   const { value: discription, handleBlur: dBlur } = useField("discription");
-  const { value: category, errorMessage: cError, handleBlur: cBlur } = useField("category");
-  const { value: price, errorMessage: pError, handleBlur: pBlur } = useField("price");
-  const { value: count, errorMessage: cntError, handleBlur: cntBlur } = useField("count");
-
+  const { value: category, errorMessage: cError, handleBlur: cBlur } = useField(
+    "category"
+  );
+  const { value: price, errorMessage: pError, handleBlur: pBlur } = useField(
+    "price"
+  );
+  const {
+    value: count,
+    errorMessage: cntError,
+    handleBlur: cntBlur
+  } = useField("count");
 
   const newProduct = useFormValues();
-  const reset = useResetForm()
+  const reset = useResetForm();
 
   const checkChangeData = computed(() =>
     Object.keys(currentProduct.value).reduce((acc, itm) => {
@@ -52,7 +64,7 @@ export function useModalNew(emit) {
         header: "Подтвердите действие",
         icon: "pi pi-exclamation-triangle",
         accept: () => {
-          reset()
+          reset();
           emit("hide");
         }
       });
@@ -64,7 +76,7 @@ export function useModalNew(emit) {
     await store.dispatch("shop/requestNewProduct", {
       ...fieldData
     });
-    resetForm()
+    resetForm();
     emit("hide");
   });
 

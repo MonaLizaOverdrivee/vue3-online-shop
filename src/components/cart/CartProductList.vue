@@ -1,6 +1,10 @@
 <template>
   <div class="p-col-12 p-d-flex product-list">
-    <img :src="img" class="product-img p-shadow-2" @click="$router.push('/product/' + id)"/>
+    <img
+      :src="img"
+      class="product-img p-shadow-2"
+      @click="$router.push('/product/' + id)"
+    />
     <div class="product-info p-ml-3">
       <h3 class="p-mt-0 p-mb-1">{{ title }}</h3>
       <p class="p-m-0">Описание товара</p>
@@ -48,8 +52,11 @@ export default {
     const product = reactive(props.data);
     const store = useStore();
     function removeProduct() {
-      store.commit('cart/REMOVE_PRODUCTS', props.data.id)
-      store.commit('shop/SET_COUNT', {id:props.data.id, count: props.data.count})
+      store.commit("cart/REMOVE_PRODUCTS", props.data.id);
+      store.commit("shop/SET_COUNT", {
+        id: props.data.id,
+        count: props.data.count
+      });
     }
     function incQuant(e) {
       const quantity = e.value;

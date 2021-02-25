@@ -19,7 +19,7 @@ import ShopView from "../components/shop/ShopView";
 import ShopFilter from "../components/shop/ShopFilter";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { computed  } from "vue";
+import { computed } from "vue";
 export default {
   setup() {
     const route = useRoute();

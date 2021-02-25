@@ -17,7 +17,9 @@
         </p>
       </div>
       <div class="p-d-flex p-jc-between">
-        <span class="product-price"><strong>Цена:</strong> {{ product.price }} РУБ</span>
+        <span class="product-price"
+          ><strong>Цена:</strong> {{ product.price }} РУБ</span
+        >
         <AppAddButton :data="product" label="Добавить в корзину" />
       </div>
     </div>

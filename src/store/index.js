@@ -21,18 +21,17 @@ export default createStore({
     }
   },
   actions: {
-    async getAppData({dispatch, commit}){
+    async getAppData({ dispatch, commit }) {
       try {
-        commit('loader/TOGGLE_LOADER_VISIBLE', true)
+        commit("loader/TOGGLE_LOADER_VISIBLE", true);
         await dispatch("cart/getProductsForCart");
         await dispatch("shop/getAllProducts");
         await dispatch("shop/getCategories");
-        await dispatch('order/getOrders')
-        commit('loader/TOGGLE_LOADER_VISIBLE', false)
+        // if(getters['auth/isAuthenticated']) await dispatch('order/getOrders')
+        commit("loader/TOGGLE_LOADER_VISIBLE", false);
       } catch (error) {
-        console.log(error)
+        console.dir(error);
       }
-
     }
   },
   modules: {

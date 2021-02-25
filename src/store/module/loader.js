@@ -3,19 +3,19 @@ export default {
   state() {
     return {
       loaderVisible: false,
-      loaderButton: false,
-    }
+      loaderButton: false
+    };
   },
   getters: {
-    loaderVisible: ({loaderVisible}) => loaderVisible,
-    loaderButton: ({loaderButton}) => loaderButton
+    loaderVisible: ({ loaderVisible }) => loaderVisible,
+    loaderButton: ({ loaderButton }) => loaderButton
   },
   mutations: {
-    TOGGLE_LOADER_VISIBLE(state, bool){
-      state.loaderVisible = bool
+    TOGGLE_LOADER_VISIBLE(state, bool) {
+      state.loaderVisible = bool;
     },
-    TOGGLE_LOADER_BUTTON(state, bool){
-      state.loaderButton = bool
+    TOGGLE_LOADER_BUTTON(state, bool) {
+      state.loaderButton = bool;
     }
   }
-}
+};

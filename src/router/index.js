@@ -3,11 +3,11 @@ import store from "../store";
 
 const routes = [
   {
-    path: '/',
-    component: () => import('../views/Home'),
+    path: "/",
+    component: () => import("../views/Home"),
     meta: {
-      layout: 'main',
-      title: 'Главная'
+      layout: "main",
+      title: "Главная"
     }
   },
   {
@@ -113,7 +113,7 @@ const routes = [
     path: "/:notFound(.*)",
     name: "NotFound",
     meta: {
-      layout: 'main'
+      layout: "main"
     },
     component: () => import("../views/PageNotFound")
   }

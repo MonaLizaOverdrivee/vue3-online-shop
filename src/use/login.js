@@ -29,7 +29,8 @@ export function useFormLogin() {
       await store.dispatch("auth/login", data).then(() => {
         if (store.getters["auth/userRole"] === "admin") router.push("/admin");
         if (store.getters["auth/userRole"] !== "admin") router.push("/");
-        if (router.currentRoute.value.path !== "/auth") store.commit("TOGGLE_VISIBLE");
+        if (router.currentRoute.value.path !== "/auth")
+          store.commit("TOGGLE_VISIBLE");
       });
     } catch {
       invalidSubmitMessage.value = "Пароль или логин введены неверно";

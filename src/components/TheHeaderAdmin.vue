@@ -40,7 +40,6 @@ export default {
           icon: "pi pi-inbox",
           to: "/admin/orders"
         }
-        
       ]
     };
   },

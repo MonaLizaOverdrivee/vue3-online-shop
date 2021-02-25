@@ -27,10 +27,8 @@ export function useModalNew(emit) {
     "title"
   );
 
-
-
   const newCategories = useFormValues();
-  const reset = useResetForm()
+  const reset = useResetForm();
 
   const checkChangeData = computed(() =>
     Object.keys(currentCategories.value).reduce((acc, itm) => {
@@ -47,7 +45,7 @@ export function useModalNew(emit) {
         header: "Подтвердите действие",
         icon: "pi pi-exclamation-triangle",
         accept: () => {
-          reset()
+          reset();
           emit("hide");
         }
       });
@@ -57,7 +55,7 @@ export function useModalNew(emit) {
   }
   const save = handleSubmit(async (fieldData, { resetForm }) => {
     await store.dispatch("shop/requestNewCategory", fieldData);
-    resetForm()
+    resetForm();
     emit("hide");
   });
 

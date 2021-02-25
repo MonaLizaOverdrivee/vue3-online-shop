@@ -111,7 +111,7 @@ export default {
     const product = reactive({ product: {} });
     const visibilityModal = ref(false);
     const visibilityModalNew = ref(false);
-    const dt = ref(null)
+    const dt = ref(null);
 
     function showModal(val) {
       product.product = { ...val };
@@ -138,10 +138,10 @@ export default {
         visibilityModal.value = false;
       }
     }
-       function exportCSV() {
-         console.log(dt.value.exportCSV)
-           dt.value.exportCSV();
-        }
+    function exportCSV() {
+      console.log(dt.value.exportCSV);
+      dt.value.exportCSV();
+    }
     return {
       visibilityModal,
       showModal,

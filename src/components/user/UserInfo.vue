@@ -1,9 +1,7 @@
-<template>
-  <strong>Имя: </strong>{{ data }}
-</template>
+<template> <strong>Имя: </strong>{{ data }} </template>
 
 <script>
 export default {
-props: ['data'],
-}
+  props: ["data"]
+};
 </script>

@@ -16,16 +16,17 @@
     </div>
     <div class="p-field">
       <label for="name">Наименование</label>
-      <InputText
-        id="title"
-        v-model="title"
-        :class="{ 'p-invalid': tError }"
-      />
+      <InputText id="title" v-model="title" :class="{ 'p-invalid': tError }" />
       <small class="p-error">{{ tError }}</small>
     </div>
     <div class="p-field">
       <label for="description">Описание</label>
-      <Textarea id="description" v-model.trim="discription" rows="3" cols="20" />
+      <Textarea
+        id="description"
+        v-model.trim="discription"
+        rows="3"
+        cols="20"
+      />
     </div>
     <div class="p-field">
       <label class="p-mb-3">Категория</label>

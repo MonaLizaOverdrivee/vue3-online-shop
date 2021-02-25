@@ -16,7 +16,7 @@ export default {
     const store = useStore();
     const route = useRoute();
     const layout = computed(() => route.meta.layout);
-    onMounted(async() => {
+    onMounted(async () => {
       await store.dispatch("getAppData");
     });
     return { layout };
@@ -24,6 +24,4 @@ export default {
   components: { AuthLayout, MainLayout, AdminLayout, ScrollTop }
 };
 </script>
-<style>
-
-</style>
+<style></style>

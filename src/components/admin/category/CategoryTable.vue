@@ -115,7 +115,7 @@ export default {
           accept: () => {
             selectedCategories.value = null;
             visibilityModal.value = false;
-            category.category = { };
+            category.category = {};
           }
         });
       } else {

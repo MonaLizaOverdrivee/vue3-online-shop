@@ -9,22 +9,28 @@ const authInApp = axios.create({
   baseURL: " https://identitytoolkit.googleapis.com/v1/"
 });
 
-requestToDatabase.defaults.params = {}
+requestToDatabase.defaults.params = {};
 
 requestToDatabase.interceptors.request.use(config => {
-  if(!store.getters['auth/isAuthenticated']) return config
-  if(store.getters['auth/isAuthenticated'] && store.getters['auth/isExpires']) {
-    store.dispatch('auth/refreshToken')
+  if (!store.getters["auth/isAuthenticated"]) return config;
+  if (
+    store.getters["auth/isAuthenticated"] &&
+    store.getters["auth/isExpires"]
+  ) {
+    store.dispatch("auth/refreshToken");
   }
-  config.params['auth'] = store.getters['auth/token']
-  return  config
-})
-
-requestToDatabase.interceptors.response.use(function (response) {
-  console.log(response)
-  return response;
-}, function () {
-  store.dispatch('auth/logOut')
+  config.params["auth"] = store.getters["auth/token"];
+  return config;
 });
+
+requestToDatabase.interceptors.response.use(
+  function(response) {
+    console.log(response);
+    return response;
+  },
+  function() {
+    store.dispatch("auth/logOut");
+  }
+);
 
 export { requestToDatabase, authInApp };
