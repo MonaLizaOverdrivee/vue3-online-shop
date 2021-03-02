@@ -45,35 +45,6 @@
   >
     <Auth />
   </Dialog>
-  <Dialog
-    header="Приветствую Владилен!"
-    dismissableMask
-    v-model:visible="modalQustions"
-    :style="{ width: '60%' }"
-    :modal="true"
-    class="p-fluid"
-  >
-    <p>
-      <strong>Пожелания:</strong> Полазить по приложению, пощелкать, посмотреть
-      какой функционал можно добавить, что улучшить
-    </p>
-    <p>
-      <strong>Вопросы:</strong> <br />
-      <i>Вопрос 1:</i> Можно ли следить за изменениями local и session storage.
-      У меня не с помощью computed не getters не отслеживали изменения
-      динамически.
-    </p>
-     <p>
-      <i>Вопрос 2:</i> Как в компаненте можно дождаться выполнения ассинхронного запроса. Например при загрузке компонента мне нужно выполнить запрос к серверу для получения отображаемых данных и мне хотелось бы дождаться получения этих саммых данных и дальше уже с ними работать. Что то вроде этого:
-      <pre>
-        setup(){
-          onMounted(async () => store.dispatch())
-          const data = computed(() => store.getters[]) // тут геттер пытается получить ещё не загруженные с сервера данные и соответсвенно могут возникать ошибки
-        }
-      </pre>
-      Можно ли сделать setup асинхронной функцией для что бы точнее контролировать исполнения кода?
-    </p>
-  </Dialog>
 </template>
 
 <script>
@@ -87,15 +58,11 @@ export default {
   data() {
     return {
       visibility: false,
-      modalQustions: false,
+      // modalQustions: false,
       items: [
         {
           label: "Магазин",
           to: "/shop"
-        },
-        {
-          label: "Вопросы",
-          command: () => (this.modalQustions = true)
         }
       ]
     };
